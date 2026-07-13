@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisasi Dashboard</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <h1>VISUALISASI DASHBOARD</h1>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </header>
+
+        <!-- Top Summary Cards -->
+        <section class="summary-section">
+            <div class="card summary-card">
+                <h2>VENDOR TERBAIK</h2>
+                <div class="vendor-best">Vendor B</div>
+            </div>
+            
+            <div class="card summary-card">
+                <h2>SISA STOK GUDANG</h2>
+                <div class="table-responsive">
+                    <table class="stock-table">
+                        <thead>
+                            <tr>
+                                <th>K-1 PUTIH</th>
+                                <th>K-1 HITAM</th>
+                                <th>K-1 ABU-ABU</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>57</td>
+                                <td>90</td>
+                                <td>98</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+            <!-- Sisa Stok -->
+            <div class="card chart-card">
+                <h2>SISA STOK DI GUDANG</h2>
+                <div class="chart-container">
+                    <canvas id="sisaStokChart"></canvas>
+                </div>
+            </div>
+
+            <!-- VPI -->
+            <div class="card chart-card">
+                <h2>VPI</h2>
+                <div class="chart-container pie-container">
+                    <canvas id="vpiChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Performa Pengiriman -->
+            <div class="card chart-card">
+                <h2>PERFORMA PENGIRIMAN PER VENDOR</h2>
+                <div class="chart-container">
+                    <canvas id="performaChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Jumlah Pesanan -->
+            <div class="card chart-card">
+                <h2>JUMLAH PESANAN PER VENDOR</h2>
+                <div class="chart-container">
+                    <canvas id="pesananChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
+</html>
