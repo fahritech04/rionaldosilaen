@@ -17,7 +17,7 @@
   --gradient-2: #dfedf4;
   --texture-color: rgba(22, 37, 59, 0.03);
   --surface-alt: linear-gradient(180deg, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.3));
-  --transition: all 0.4s ease;
+  --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-theme="dark"] {
@@ -51,7 +51,9 @@ body {
               radial-gradient(circle at 100% 0%, var(--gradient-2) 0%, transparent 48%), 
               var(--bg);
   line-height: 1.65;
-  transition: background-color 0.4s ease, color 0.4s ease;
+  transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              background-image 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -64,7 +66,7 @@ body {
                     linear-gradient(to bottom, var(--texture-color) 1px, transparent 1px);
   background-size: 44px 44px;
   z-index: -1;
-  transition: background-image 0.4s ease;
+  transition: background-image 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .container {
@@ -120,6 +122,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  -webkit-tap-highlight-color: transparent; /* Menghilangkan efek kotak saat ditap di HP */
+}
+
+.theme-toggle:focus {
+  outline: none; /* Menghilangkan outline (kotak) default dari browser saat diklik/fokus */
 }
 
 .theme-toggle:hover {
@@ -144,24 +151,29 @@ body {
   transition: var(--transition);
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Mencegah konten meluber dari radius */
+  overflow: hidden;
 }
 
 .card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] .card:hover {
+  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.6);
 }
 
 /* Mobile-first grid layouts */
 .summary-section {
   display: grid;
-  grid-template-columns: 1fr; /* 1 kolom di mobile */
+  grid-template-columns: 1fr; 
   gap: clamp(16px, 3vw, 28px);
   margin-bottom: clamp(24px, 4vw, 40px);
 }
 
 .charts-section {
   display: grid;
-  grid-template-columns: 1fr; /* 1 kolom di mobile */
+  grid-template-columns: 1fr; 
   gap: clamp(16px, 3vw, 28px);
 }
 
@@ -186,12 +198,13 @@ body {
   width: 100%;
   border-collapse: collapse;
   text-align: center;
-  min-width: 300px; /* Mencegah tabel menyempit berlebihan di mobile */
+  min-width: 300px; 
 }
 
 .stock-table th, .stock-table td {
   border-bottom: 1px solid var(--line);
   padding: clamp(10px, 2vw, 16px) clamp(8px, 1.5vw, 12px);
+  transition: var(--transition);
 }
 
 .stock-table th {
@@ -221,6 +234,31 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.summary-section .card:nth-child(1) { animation-delay: 0.1s; }
+.summary-section .card:nth-child(2) { animation-delay: 0.2s; }
+.charts-section .card:nth-child(1) { animation-delay: 0.3s; }
+.charts-section .card:nth-child(2) { animation-delay: 0.4s; }
+.charts-section .card:nth-child(3) { animation-delay: 0.5s; }
+.charts-section .card:nth-child(4) { animation-delay: 0.6s; }
+
 
 /* Tablet Layout */
 @media (min-width: 768px) {
