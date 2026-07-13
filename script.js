@@ -22,17 +22,15 @@ themeToggle.addEventListener('click', () => {
 
 function updateIcon(theme) {
     if (theme === 'dark') {
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
+        themeToggle.innerHTML = '<span class="icon">☀️</span>';
     } else {
-        icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon');
+        themeToggle.innerHTML = '<span class="icon">🌙</span>';
     }
 }
 
 // Chart.js Default Settings
-Chart.defaults.font.family = "'Inter', sans-serif";
-Chart.defaults.color = htmlEl.getAttribute('data-theme') === 'dark' ? '#e0e0e0' : '#333333';
+Chart.defaults.font.family = "'Space Grotesk', sans-serif";
+Chart.defaults.color = htmlEl.getAttribute('data-theme') === 'dark' ? '#94a3b8' : '#425069';
 
 const commonOptions = {
     responsive: true,
@@ -44,34 +42,51 @@ const commonOptions = {
                 boxWidth: 12,
                 padding: 20,
                 font: {
-                    family: "'Inter', sans-serif",
+                    family: "'Space Grotesk', sans-serif",
                     size: 13
                 }
             }
         },
         tooltip: {
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            titleFont: { family: "'Inter', sans-serif", size: 14 },
-            bodyFont: { family: "'Inter', sans-serif", size: 13 },
+            backgroundColor: htmlEl.getAttribute('data-theme') === 'dark' ? 'rgba(30, 41, 59, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+            titleColor: htmlEl.getAttribute('data-theme') === 'dark' ? '#f8fafc' : '#16253b',
+            bodyColor: htmlEl.getAttribute('data-theme') === 'dark' ? '#f8fafc' : '#16253b',
+            titleFont: { family: "'Space Grotesk', sans-serif", size: 14, weight: 'bold' },
+            bodyFont: { family: "'Space Grotesk', sans-serif", size: 13 },
             padding: 12,
-            cornerRadius: 8
+            cornerRadius: 8,
+            borderColor: htmlEl.getAttribute('data-theme') === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(22, 37, 59, 0.1)',
+            borderWidth: 1
         }
     },
     animation: {
-        duration: 1000,
+        duration: 800,
         easing: 'easeOutQuart'
     }
 };
 
-// Colors based on the provided image design
-const colors = {
-    blue: '#4a90e2',
-    orange: '#f39c12',
-    gray: '#95a5a6',
-    pieVendorA: '#ed7d31', // Orange
-    pieVendorB: '#4472c4', // Blue
-    pieVendorC: '#a5a5a5'  // Gray
-};
+// Colors matching raihanfahrifi.my.id
+function getColors(theme) {
+    if (theme === 'dark') {
+        return {
+            primary: '#f28b6d',   // Light Orange
+            accent: '#38bdf8',    // Light Blue
+            gray: '#94a3b8',      // Slate
+            grid: 'rgba(255, 255, 255, 0.1)',
+            pieBorder: '#1e293b'
+        };
+    } else {
+        return {
+            primary: '#cc5f3d',   // Orange
+            accent: '#1f5f77',    // Blue
+            gray: '#425069',      // Slate
+            grid: 'rgba(22, 37, 59, 0.1)',
+            pieBorder: '#ffffff'
+        };
+    }
+}
+
+let currentColors = getColors(htmlEl.getAttribute('data-theme'));
 
 // 1. Sisa Stok Chart (Horizontal Bar)
 const ctxSisa = document.getElementById('sisaStokChart').getContext('2d');
@@ -82,7 +97,7 @@ const sisaStokChart = new Chart(ctxSisa, {
         datasets: [{
             label: 'Sisa Stok (Kg)',
             data: [98, 90, 57],
-            backgroundColor: colors.blue,
+            backgroundColor: currentColors.accent,
             borderRadius: 6,
             barThickness: 30
         }]
@@ -96,7 +111,7 @@ const sisaStokChart = new Chart(ctxSisa, {
                 max: 120,
                 grid: {
                     drawBorder: false,
-                    color: htmlEl.getAttribute('data-theme') === 'dark' ? '#333' : '#e0e0e0'
+                    color: currentColors.grid
                 }
             },
             y: {
@@ -115,10 +130,10 @@ const vpiChart = new Chart(ctxVpi, {
     data: {
         labels: ['Vendor A', 'Vendor B', 'Vendor C'],
         datasets: [{
-            data: [103, 74, 28], // Vendor A (Orange), Vendor B (Blue), Vendor C (Gray)
-            backgroundColor: [colors.pieVendorA, colors.pieVendorB, colors.pieVendorC],
+            data: [103, 74, 28], 
+            backgroundColor: [currentColors.primary, currentColors.accent, currentColors.gray],
             borderWidth: 2,
-            borderColor: htmlEl.getAttribute('data-theme') === 'dark' ? '#1e1e1e' : '#ffffff',
+            borderColor: currentColors.pieBorder,
             hoverOffset: 4
         }]
     },
@@ -146,7 +161,7 @@ const performaChart = new Chart(ctxPerforma, {
             {
                 label: 'Tepat Waktu',
                 data: [2, 1, 0],
-                backgroundColor: colors.blue,
+                backgroundColor: currentColors.accent,
                 borderRadius: 4,
                 barPercentage: 0.8,
                 categoryPercentage: 0.6
@@ -154,7 +169,7 @@ const performaChart = new Chart(ctxPerforma, {
             {
                 label: 'Total Pengiriman',
                 data: [2, 2, 2],
-                backgroundColor: colors.orange,
+                backgroundColor: currentColors.primary,
                 borderRadius: 4,
                 barPercentage: 0.8,
                 categoryPercentage: 0.6
@@ -169,7 +184,7 @@ const performaChart = new Chart(ctxPerforma, {
                 max: 2.5,
                 ticks: { stepSize: 0.5 },
                 grid: {
-                    color: htmlEl.getAttribute('data-theme') === 'dark' ? '#333' : '#e0e0e0'
+                    color: currentColors.grid
                 }
             },
             x: {
@@ -189,7 +204,7 @@ const pesananChart = new Chart(ctxPesanan, {
             {
                 label: 'Total Pesanan',
                 data: [2, 2, 2],
-                backgroundColor: colors.blue,
+                backgroundColor: currentColors.accent,
                 borderRadius: 4,
                 barPercentage: 0.8,
                 categoryPercentage: 0.6
@@ -197,7 +212,7 @@ const pesananChart = new Chart(ctxPesanan, {
             {
                 label: 'Retur',
                 data: [1, 0, 2],
-                backgroundColor: colors.orange,
+                backgroundColor: currentColors.primary,
                 borderRadius: 4,
                 barPercentage: 0.8,
                 categoryPercentage: 0.6
@@ -212,7 +227,7 @@ const pesananChart = new Chart(ctxPesanan, {
                 max: 2.5,
                 ticks: { stepSize: 0.5 },
                 grid: {
-                    color: htmlEl.getAttribute('data-theme') === 'dark' ? '#333' : '#e0e0e0'
+                    color: currentColors.grid
                 }
             },
             x: {
@@ -224,31 +239,56 @@ const pesananChart = new Chart(ctxPesanan, {
 
 // Function to update chart colors on theme switch
 function updateChartsTheme(theme) {
-    const textColor = theme === 'dark' ? '#e0e0e0' : '#333333';
-    const gridColor = theme === 'dark' ? '#333333' : '#e0e0e0';
-    const pieBorder = theme === 'dark' ? '#1e1e1e' : '#ffffff';
+    const colors = getColors(theme);
+    const textColor = theme === 'dark' ? '#94a3b8' : '#425069';
+
+    Chart.defaults.color = textColor;
 
     const barCharts = [sisaStokChart, performaChart, pesananChart];
     
+    // Update Sisa Stok
+    sisaStokChart.data.datasets[0].backgroundColor = colors.accent;
+    
+    // Update Performa & Pesanan
+    performaChart.data.datasets[0].backgroundColor = colors.accent;
+    performaChart.data.datasets[1].backgroundColor = colors.primary;
+    
+    pesananChart.data.datasets[0].backgroundColor = colors.accent;
+    pesananChart.data.datasets[1].backgroundColor = colors.primary;
+
     barCharts.forEach(chart => {
         if(chart.options.scales.x) {
             chart.options.scales.x.ticks.color = textColor;
             if(chart.options.scales.x.grid) {
-                chart.options.scales.x.grid.color = gridColor;
+                chart.options.scales.x.grid.color = colors.grid;
             }
         }
         if(chart.options.scales.y) {
             chart.options.scales.y.ticks.color = textColor;
             if(chart.options.scales.y.grid) {
-                chart.options.scales.y.grid.color = gridColor;
+                chart.options.scales.y.grid.color = colors.grid;
             }
         }
         chart.options.plugins.legend.labels.color = textColor;
+        
+        // Update tooltip colors
+        chart.options.plugins.tooltip.backgroundColor = theme === 'dark' ? 'rgba(30, 41, 59, 0.9)' : 'rgba(255, 255, 255, 0.9)';
+        chart.options.plugins.tooltip.titleColor = theme === 'dark' ? '#f8fafc' : '#16253b';
+        chart.options.plugins.tooltip.bodyColor = theme === 'dark' ? '#f8fafc' : '#16253b';
+        chart.options.plugins.tooltip.borderColor = theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(22, 37, 59, 0.1)';
+
         chart.update();
     });
 
     // Pie chart update
+    vpiChart.data.datasets[0].backgroundColor = [colors.primary, colors.accent, colors.gray];
+    vpiChart.data.datasets[0].borderColor = colors.pieBorder;
     vpiChart.options.plugins.legend.labels.color = textColor;
-    vpiChart.data.datasets[0].borderColor = pieBorder;
+    
+    vpiChart.options.plugins.tooltip.backgroundColor = theme === 'dark' ? 'rgba(30, 41, 59, 0.9)' : 'rgba(255, 255, 255, 0.9)';
+    vpiChart.options.plugins.tooltip.titleColor = theme === 'dark' ? '#f8fafc' : '#16253b';
+    vpiChart.options.plugins.tooltip.bodyColor = theme === 'dark' ? '#f8fafc' : '#16253b';
+    vpiChart.options.plugins.tooltip.borderColor = theme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(22, 37, 59, 0.1)';
+    
     vpiChart.update();
 }

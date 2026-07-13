@@ -5,36 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualisasi Dashboard</title>
     
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Space Grotesk & DM Serif Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="dashboard-container">
-        <!-- Header -->
-        <header class="dashboard-header">
-            <h1>VISUALISASI DASHBOARD</h1>
-            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
-                <i class="fas fa-moon"></i>
-            </button>
-        </header>
+    <div class="texture-layer" aria-hidden="true"></div>
+    
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container nav-wrap">
+            <a href="#" class="brand">
+                <span class="brand-text">VISUALISASI DASHBOARD</span>
+            </a>
+            
+            <div class="header-controls">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                    <span class="icon">🌙</span>
+                </button>
+            </div>
+        </div>
+    </header>
 
+    <main class="dashboard-container">
         <!-- Top Summary Cards -->
         <section class="summary-section">
-            <div class="card summary-card">
-                <h2>VENDOR TERBAIK</h2>
+            <article class="card summary-card reveal">
+                <p class="eyebrow">Vendor Terbaik</p>
                 <div class="vendor-best">Vendor B</div>
-            </div>
+            </article>
             
-            <div class="card summary-card">
-                <h2>SISA STOK GUDANG</h2>
+            <article class="card summary-card reveal">
+                <p class="eyebrow">Sisa Stok Gudang</p>
                 <div class="table-responsive">
                     <table class="stock-table">
                         <thead>
@@ -53,44 +59,44 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </article>
         </section>
 
         <!-- Charts Section -->
         <section class="charts-section">
             <!-- Sisa Stok -->
-            <div class="card chart-card">
-                <h2>SISA STOK DI GUDANG</h2>
+            <article class="card chart-card reveal">
+                <p class="eyebrow">Sisa Stok di Gudang</p>
                 <div class="chart-container">
                     <canvas id="sisaStokChart"></canvas>
                 </div>
-            </div>
+            </article>
 
             <!-- VPI -->
-            <div class="card chart-card">
-                <h2>VPI</h2>
+            <article class="card chart-card reveal">
+                <p class="eyebrow">VPI</p>
                 <div class="chart-container pie-container">
                     <canvas id="vpiChart"></canvas>
                 </div>
-            </div>
+            </article>
 
             <!-- Performa Pengiriman -->
-            <div class="card chart-card">
-                <h2>PERFORMA PENGIRIMAN PER VENDOR</h2>
+            <article class="card chart-card reveal">
+                <p class="eyebrow">Performa Pengiriman per Vendor</p>
                 <div class="chart-container">
                     <canvas id="performaChart"></canvas>
                 </div>
-            </div>
+            </article>
 
             <!-- Jumlah Pesanan -->
-            <div class="card chart-card">
-                <h2>JUMLAH PESANAN PER VENDOR</h2>
+            <article class="card chart-card reveal">
+                <p class="eyebrow">Jumlah Pesanan per Vendor</p>
                 <div class="chart-container">
                     <canvas id="pesananChart"></canvas>
                 </div>
-            </div>
+            </article>
         </section>
-    </div>
+    </main>
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
