@@ -103,7 +103,13 @@ function getTooltipConfig(colors) {
         titleFont: { family: "'Space Grotesk', sans-serif", size: 14, weight: 'bold' },
         bodyFont:  { family: "'Space Grotesk', sans-serif", size: 13 },
         padding: 12, cornerRadius: 8,
-        borderColor: colors.ttBorder, borderWidth: 1
+        borderColor: colors.ttBorder, borderWidth: 1,
+        usePointStyle: true, boxPadding: 8,
+        callbacks: {
+            labelPointStyle: function(context) {
+                return { pointStyle: 'rectRounded', rotation: 0 };
+            }
+        }
     };
 }
 
@@ -218,6 +224,7 @@ function initCharts() {
                 // LINE: border color, tension, fill, points
                 baseDs.borderColor = bgColor;
                 baseDs.backgroundColor = ds.fill ? hexToRgba(bgColor, 0.15) : 'transparent';
+                baseDs.pointBackgroundColor = bgColor;
                 baseDs.tension = ds.tension || 0.3;
                 baseDs.fill = ds.fill || false;
                 baseDs.pointRadius = 4;
@@ -236,9 +243,19 @@ function initCharts() {
         // Build chart options
         const baseOptions = {
             responsive: true, maintainAspectRatio: false,
-            animation: { duration: 800, easing: 'easeOutQuart' },
+            animation: {
+                duration: 1400,
+                easing: 'easeOutElastic',
+                delay: (context) => {
+                    let delay = 0;
+                    if (context.type === 'data' && context.mode === 'default' && !context.active) {
+                        delay = context.dataIndex * 150 + context.datasetIndex * 100;
+                    }
+                    return delay;
+                }
+            },
             plugins: {
-                legend: { position: 'bottom', labels: { boxWidth: 12, padding: 20, font: { family: "'Space Grotesk', sans-serif", size: 13 } } },
+                legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'rectRounded', boxWidth: 12, padding: 20, font: { family: "'Space Grotesk', sans-serif", size: 13 } } },
                 tooltip: getTooltipConfig(colors)
             },
             ...config.options
@@ -289,6 +306,7 @@ function updateChartsTheme(theme) {
                 ds.borderColor = colors.pieBorder;
             } else if (config.type === 'line') {
                 ds.borderColor = newColor;
+                ds.pointBackgroundColor = newColor;
                 if (origDs.fill) ds.backgroundColor = hexToRgba(newColor, 0.15);
             }
         });
