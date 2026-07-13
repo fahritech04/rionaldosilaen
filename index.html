@@ -1,106 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id" data-theme="light">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Visualisasi Dashboard</title>
-    
+
     <!-- Google Fonts: Space Grotesk & DM Serif Display -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="texture-layer" aria-hidden="true"></div>
-    
+
     <!-- Header -->
     <header class="site-header">
-        <div class="container nav-wrap">
-            <a href="#" class="brand">
-                <span class="brand-text">VISUALISASI DASHBOARD</span>
-            </a>
-            
-            <div class="header-controls">
-                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-                    <span class="icon">🌙</span>
-                </button>
-            </div>
+      <div class="container nav-wrap">
+        <a href="#" class="brand">
+          <span class="brand-text">VISUALISASI DASHBOARD tes</span>
+        </a>
+
+        <div class="header-controls">
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+            <span class="icon">🌙</span>
+          </button>
         </div>
+      </div>
     </header>
 
     <main class="dashboard-container">
-        <!-- Top Summary Cards -->
-        <section class="summary-section">
-            <article class="card summary-card reveal">
-                <p class="eyebrow">Vendor Terbaik</p>
-                <div class="vendor-best">Vendor B</div>
-            </article>
-            
-            <article class="card summary-card reveal">
-                <p class="eyebrow">Sisa Stok Gudang</p>
-                <div class="table-responsive">
-                    <table class="stock-table">
-                        <thead>
-                            <tr>
-                                <th>K-1 PUTIH</th>
-                                <th>K-1 HITAM</th>
-                                <th>K-1 ABU-ABU</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>57</td>
-                                <td>90</td>
-                                <td>98</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </article>
-        </section>
+      <!-- Top Summary Cards -->
+      <section class="summary-section">
+        <article class="card summary-card reveal">
+          <p class="eyebrow">Vendor Terbaik</p>
+          <div class="vendor-best">Vendor B</div>
+        </article>
 
-        <!-- Charts Section -->
-        <section class="charts-section">
-            <!-- Sisa Stok -->
-            <article class="card chart-card reveal">
-                <p class="eyebrow">Sisa Stok di Gudang</p>
-                <div class="chart-container">
-                    <canvas id="sisaStokChart"></canvas>
-                </div>
-            </article>
+        <article class="card summary-card reveal">
+          <p class="eyebrow">Sisa Stok Gudang</p>
+          <div class="table-responsive">
+            <table class="stock-table">
+              <thead>
+                <tr>
+                  <th>K-1 PUTIH</th>
+                  <th>K-1 HITAM</th>
+                  <th>K-1 ABU-ABU</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>57</td>
+                  <td>90</td>
+                  <td>98</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
 
-            <!-- VPI -->
-            <article class="card chart-card reveal">
-                <p class="eyebrow">VPI</p>
-                <div class="chart-container pie-container">
-                    <canvas id="vpiChart"></canvas>
-                </div>
-            </article>
+      <!-- Charts Section -->
+      <section class="charts-section">
+        <!-- Sisa Stok -->
+        <article class="card chart-card reveal">
+          <p class="eyebrow">Sisa Stok di Gudang</p>
+          <div class="chart-container">
+            <canvas id="sisaStokChart"></canvas>
+          </div>
+        </article>
 
-            <!-- Performa Pengiriman -->
-            <article class="card chart-card reveal">
-                <p class="eyebrow">Performa Pengiriman per Vendor</p>
-                <div class="chart-container">
-                    <canvas id="performaChart"></canvas>
-                </div>
-            </article>
+        <!-- VPI -->
+        <article class="card chart-card reveal">
+          <p class="eyebrow">VPI</p>
+          <div class="chart-container pie-container">
+            <canvas id="vpiChart"></canvas>
+          </div>
+        </article>
 
-            <!-- Jumlah Pesanan -->
-            <article class="card chart-card reveal">
-                <p class="eyebrow">Jumlah Pesanan per Vendor</p>
-                <div class="chart-container">
-                    <canvas id="pesananChart"></canvas>
-                </div>
-            </article>
-        </section>
+        <!-- Performa Pengiriman -->
+        <article class="card chart-card reveal">
+          <p class="eyebrow">Performa Pengiriman per Vendor</p>
+          <div class="chart-container">
+            <canvas id="performaChart"></canvas>
+          </div>
+        </article>
+
+        <!-- Jumlah Pesanan -->
+        <article class="card chart-card reveal">
+          <p class="eyebrow">Jumlah Pesanan per Vendor</p>
+          <div class="chart-container">
+            <canvas id="pesananChart"></canvas>
+          </div>
+        </article>
+      </section>
     </main>
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Custom Script -->
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
