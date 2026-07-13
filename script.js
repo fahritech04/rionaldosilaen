@@ -24,6 +24,26 @@ function updateToggleIcon(theme) {
 }
 
 // ==========================================
+// MOBILE MENU LOGIC
+// ==========================================
+const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+const navTabs = document.querySelector('.nav-tabs');
+
+mobileMenuToggle.addEventListener('click', () => {
+    mobileMenuToggle.classList.toggle('is-active');
+    navTabs.classList.toggle('is-open');
+});
+
+// Close mobile menu when a link is clicked
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth <= 900) {
+            mobileMenuToggle.classList.remove('is-active');
+            navTabs.classList.remove('is-open');
+        }
+    });
+});
+// ==========================================
 // SCROLL SPY — Active Nav Link
 // ==========================================
 const navLinks = document.querySelectorAll('.nav-link[data-section]');
