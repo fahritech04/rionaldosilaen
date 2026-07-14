@@ -49,16 +49,25 @@ body {
   margin: 0;
   font-family: "Space Grotesk", sans-serif;
   color: var(--text);
+  background-color: var(--bg);
+  line-height: 1.65;
+  transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
   background: 
     radial-gradient(circle at 15% 20%, var(--gradient-1) 0%, transparent 60%),
     radial-gradient(circle at 85% 30%, var(--gradient-2) 0%, transparent 60%),
     radial-gradient(circle at 50% 90%, var(--gradient-3) 0%, transparent 65%),
     var(--bg);
-  background-attachment: fixed;
-  line-height: 1.65;
-  transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
-  min-height: 100vh;
-  overflow-x: hidden;
+  transition: background-color 0.4s ease-in-out;
 }
 
 .texture-layer {
