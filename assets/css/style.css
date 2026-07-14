@@ -85,7 +85,7 @@ body::before {
 .site-header {
   position: sticky; top: 0; z-index: 100;
   background: var(--surface);
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  /* Mobile: blur dimatikan agar scroll HP lancar, dinyalakan di media query */
   border-bottom: 1px solid var(--line);
   transition: var(--transition);
 }
@@ -214,14 +214,14 @@ body::before {
    ========================================== */
 .card {
   background: var(--surface);
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  /* Mobile: blur dimatikan agar scroll HP lancar */
   border-radius: var(--radius-lg);
   padding: clamp(16px, 3vw, 28px);
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
   transition: var(--transition);
   display: flex; flex-direction: column; overflow: hidden;
-  will-change: transform, box-shadow;
+  /* Dihapus will-change: transform untuk menghemat memori VRAM HP */
 }
 .card:hover {
   transform: translateY(-6px);
@@ -332,8 +332,7 @@ body::before {
   margin-top: clamp(20px, 5vw, 40px);
   padding: clamp(24px, 4vw, 32px) 0;
   background: var(--surface);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  /* Mobile: blur dimatikan agar scroll HP lancar */
   border-top: 1px solid var(--line);
   text-align: center;
   transition: var(--transition);
@@ -352,8 +351,9 @@ body::before {
    ========================================== */
 @media (min-width: 768px) {
   .summary-section { grid-template-columns: repeat(2, 1fr); }
-  .card, .site-header {
-    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  /* Efek blur (glassmorphism) berat HANYA diaktifkan di layar besar/laptop */
+  .card, .site-header, .site-footer {
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   }
 }
 
