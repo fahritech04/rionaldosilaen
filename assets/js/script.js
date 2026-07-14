@@ -84,13 +84,13 @@ const activeCharts = [];
 function getColors(theme) {
     const isDark = theme === 'dark';
     return {
-        text:      isDark ? '#94a3b8' : '#425069',
-        primary:   isDark ? '#f28b6d' : '#cc5f3d',
-        accent:    isDark ? '#38bdf8' : '#1f5f77',
-        gray:      isDark ? '#94a3b8' : '#425069',
+        text:      isDark ? '#cbd5e1' : '#425069',
+        primary:   isDark ? '#ff2a75' : '#cc5f3d',
+        accent:    isDark ? '#00e5ff' : '#1f5f77',
+        gray:      isDark ? '#a855f7' : '#425069',
         grid:      isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(22, 37, 59, 0.1)',
-        pieBorder: isDark ? '#1e293b' : '#ffffff',
-        ttBg:      isDark ? 'rgba(30, 41, 59, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+        pieBorder: 'transparent',
+        ttBg:      isDark ? 'rgba(15, 23, 42, 0.95)' : 'rgba(255, 255, 255, 0.95)',
         ttText:    isDark ? '#f8fafc' : '#16253b',
         ttBorder:  isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(22, 37, 59, 0.1)'
     };
@@ -216,10 +216,10 @@ function initCharts() {
             if (ds.label) baseDs.label = ds.label;
 
             if (ds.isPie) {
-                // PIE: border, hover
-                baseDs.borderWidth = 2;
-                baseDs.borderColor = colors.pieBorder;
-                baseDs.hoverOffset = 4;
+                // PIE: Clean glassmorphism shape without borders, smooth offset
+                baseDs.borderWidth = 0;
+                baseDs.hoverBorderWidth = 0;
+                baseDs.hoverOffset = 8;
             } else if (config.type === 'line') {
                 // LINE: border color, tension, fill, points
                 baseDs.borderColor = bgColor;
@@ -244,8 +244,8 @@ function initCharts() {
         const baseOptions = {
             responsive: true, maintainAspectRatio: false,
             animation: {
-                duration: 1400,
-                easing: 'easeOutElastic',
+                duration: 800,
+                easing: 'easeOutQuart', // Non-bouncy to prevent cursor flicker
                 delay: (context) => {
                     let delay = 0;
                     if (context.type === 'data' && context.mode === 'default' && !context.active) {
@@ -325,7 +325,11 @@ function updateChartsTheme(theme) {
         chart.options.plugins.legend.labels.color = colors.text;
         Object.assign(chart.options.plugins.tooltip, getTooltipConfig(colors));
 
+        // Sync transition update (400ms CSS)
+        const originalDuration = chart.options.animation.duration;
+        chart.options.animation.duration = 400;
         chart.update();
+        setTimeout(() => { chart.options.animation.duration = originalDuration; }, 450);
     });
 }
 
