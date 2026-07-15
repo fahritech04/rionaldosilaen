@@ -703,13 +703,11 @@ function updateDashboardUI(data) {
   // qc_data: langsung dari spreadsheet, semua kolom apa adanya
   // ================================================================
   if (data.qc_data && data.qc_data.length > 0) {
-    // Filter baris kosong: pastikan Tanggal, Material, dan Vendor ada isinya
+    // Filter baris kosong: cukup pastikan Tanggal ada isinya
     const validQC = data.qc_data
       .filter((r) => {
         const tgl = str(r[1]);
-        const mat = str(r[2]);
-        const ven = str(r[3]);
-        return tgl !== "" && tgl !== "-" && mat !== "" && mat !== "-" && ven !== "" && ven !== "-";
+        return tgl !== "" && tgl !== "-";
       })
       .reverse();
 
