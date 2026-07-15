@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz4gXBN1WqpwZYZwJZNUI6vn78EAeAaHrZqtbPZn3iPznxwrtDuoPNX3HxK6CjHGMMoOg/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz2kN9If3fZZwFqJWPhroXuoaPeZaRCE0wiwCK2xyRSKl4MwZmGm0_5Q0q1qhuBQCOoqQ/exec";
 
 // ==========================================
 // Tema & UI Logic
