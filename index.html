@@ -19,6 +19,12 @@
   <body>
     <div class="texture-layer" aria-hidden="true"></div>
 
+    <!-- Global Loading Overlay -->
+    <div id="global-loader" class="global-loader">
+      <div class="spinner"></div>
+      <p style="text-align:center;">Sinkronisasi Data...</p>
+    </div>
+
     <!-- Header -->
     <header class="site-header">
       <div class="container nav-wrap">
@@ -29,7 +35,6 @@
         <div class="header-controls">
           <nav class="nav-tabs" aria-label="Navigasi dashboard">
             <a href="#dashboard" class="nav-link active" data-section="dashboard">Dashboard</a>
-            <a href="#mrp" class="nav-link" data-section="mrp">MRP</a>
             <a href="#qc" class="nav-link" data-section="qc">Quality Control</a>
             <a href="#fifo" class="nav-link" data-section="fifo">FIFO</a>
           </nav>
@@ -67,17 +72,13 @@
             <div class="table-responsive">
               <table class="stock-table">
                 <thead>
-                  <tr>
-                    <th>K-1-PUTIH</th>
-                    <th>K-1-HITAM</th>
-                    <th>K-1-ABU-ABU</th>
+                  <tr id="stock-thead">
+                    <!-- kolom material diisi dinamis oleh script.js -->
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>57</td>
-                    <td>90</td>
-                    <td>98</td>
+                  <tr id="stock-tbody">
+                    <!-- nilai stok diisi dinamis oleh script.js -->
                   </tr>
                 </tbody>
               </table>
@@ -132,34 +133,12 @@
                     <th>Harga (Rp/kg)</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>Vendor A</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>75</td>
-                  </tr>
-                  <tr>
-                    <td>Vendor B</td>
-                    <td>2</td>
-                    <td>0</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>73</td>
-                  </tr>
-                  <tr>
-                    <td>Vendor C</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>0</td>
-                    <td>72</td>
-                  </tr>
+                <tbody id="vpi-raw-tbody">
+                  <!-- Dynamic Data -->
                 </tbody>
               </table>
             </div>
+            <div id="vpi-raw-pagination" class="pagination"></div>
           </article>
 
           <article class="card reveal">
@@ -176,151 +155,12 @@
                     <th>Ranking</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>Vendor A</td>
-                    <td>50</td>
-                    <td>100</td>
-                    <td>96</td>
-                    <td>74,2</td>
-                    <td>2</td>
-                  </tr>
-                  <tr>
-                    <td>Vendor B</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>98,6</td>
-                    <td>99,7</td>
-                    <td>1</td>
-                  </tr>
-                  <tr>
-                    <td>Vendor C</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>100</td>
-                    <td>20,0</td>
-                    <td>3</td>
-                  </tr>
+                <tbody id="vpi-scoring-tbody">
+                  <!-- Dynamic Data -->
                 </tbody>
               </table>
             </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- ============================================ -->
-      <!-- SECTION: MRP                                 -->
-      <!-- ============================================ -->
-      <section id="mrp" class="dashboard-section">
-        <div class="section-heading reveal">
-          <p class="eyebrow">Material Requirements Planning</p>
-          <h2 class="section-title">Implementasi MRP (Metode LFL, Lead Time 1 Minggu)</h2>
-        </div>
-
-        <div class="charts-section single-col">
-          <article class="card reveal">
-            <p class="eyebrow">Tabel MRP — Defect Rate 2,5%</p>
-            <div class="table-responsive">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Komponen</th>
-                    <th>PD</th>
-                    <th>M1</th>
-                    <th>M2</th>
-                    <th>M3</th>
-                    <th>M4</th>
-                    <th>M5</th>
-                    <th>M6</th>
-                    <th>M7</th>
-                    <th>Satuan</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>GR — Kebutuhan Kotor</td>
-                    <td>-</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>kg</td>
-                  </tr>
-                  <tr>
-                    <td>SR — Penerimaan Terjadwal</td>
-                    <td>-</td>
-                    <td>10</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>kg</td>
-                  </tr>
-                  <tr>
-                    <td>PoH — Persediaan Awal</td>
-                    <td>20</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>kg</td>
-                  </tr>
-                  <tr>
-                    <td>NR — Kebutuhan Bersih</td>
-                    <td>-</td>
-                    <td>20</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>kg</td>
-                  </tr>
-                  <tr>
-                    <td>PORt — Penerimaan Terencana</td>
-                    <td>-</td>
-                    <td>20</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>kg</td>
-                  </tr>
-                  <tr>
-                    <td>PORel — Pelepasan Pesanan</td>
-                    <td>20</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>0</td>
-                    <td>kg</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </article>
-        </div>
-
-        <div class="charts-section single-col">
-          <article class="card chart-card reveal">
-            <p class="eyebrow">Grafik MRP — Kebutuhan vs Pelepasan Pesanan</p>
-            <div class="chart-container">
-              <canvas id="mrpChart"></canvas>
-            </div>
+            <div id="vpi-scoring-pagination" class="pagination"></div>
           </article>
         </div>
       </section>
@@ -341,87 +181,34 @@
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th>No</th>
-                    <th>Tanggal</th>
-                    <th>Material</th>
-                    <th>Vendor</th>
-                    <th>Sampel</th>
-                    <th>Cacat</th>
-                    <th>Hasil AQL</th>
-                    <th>Hasil Akhir</th>
-                    <th>Status Kirim</th>
+                    <th style="min-width: 50px;">No.</th>
+                    <th style="min-width: 120px;">Tanggal Masuk</th>
+                    <th style="min-width: 120px;">Kode Material</th>
+                    <th style="min-width: 100px;">Vendor</th>
+                    <th style="min-width: 150px;">Deskripsi Defect</th>
+                    <th style="min-width: 100px;">Ukuran Sampel (n)</th>
+                    <th style="min-width: 100px;">Kode Sampel</th>
+                    <th style="min-width: 80px;">Ac &le;</th>
+                    <th style="min-width: 80px;">Re &ge;</th>
+                    <th style="min-width: 100px;">Cacat Ditemukan</th>
+                    <th style="min-width: 100px;">Foto Bukti?</th>
+                    <th style="min-width: 120px;">Hasil AQL 2.5</th>
+                    <th style="min-width: 180px;">Keputusan (LOLOS/RETUR/HOLD)</th>
+                    <th style="min-width: 150px;">Validasi Supervisor</th>
+                    <th style="min-width: 150px;">Koordinasi Vendor</th>
+                    <th style="min-width: 120px;">Hasil Akhir</th>
+                    <th style="min-width: 150px;">Jadwal Pengiriman PO</th>
+                    <th style="min-width: 150px;">Tanggal Barang Sampai</th>
+                    <th style="min-width: 150px;">Status Pengiriman</th>
+                    <th style="min-width: 150px;">Keterangan</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>1 Jun 2026</td>
-                    <td>K-1-PUTIH</td>
-                    <td>Vendor A</td>
-                    <td>8</td>
-                    <td>1</td>
-                    <td class="badge-lolos">LOLOS</td>
-                    <td class="badge-return">RETURN</td>
-                    <td class="badge-lolos">TEPAT WAKTU</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>10 Jun 2026</td>
-                    <td>K-1-HITAM</td>
-                    <td>Vendor B</td>
-                    <td>13</td>
-                    <td>0</td>
-                    <td class="badge-lolos">LOLOS</td>
-                    <td class="badge-lolos">LOLOS</td>
-                    <td class="badge-lolos">TEPAT WAKTU</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>15 Jun 2026</td>
-                    <td>K-1-ABU-ABU</td>
-                    <td>Vendor C</td>
-                    <td>20</td>
-                    <td>2</td>
-                    <td class="badge-return">RETUR</td>
-                    <td class="badge-return">RETURN</td>
-                    <td class="badge-return">DELAY</td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>16 Jun 2026</td>
-                    <td>K-1-PUTIH</td>
-                    <td>Vendor A</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td class="badge-return">RETUR</td>
-                    <td class="badge-lolos">LOLOS</td>
-                    <td class="badge-lolos">TEPAT WAKTU</td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>17 Jun 2026</td>
-                    <td>K-1-HITAM</td>
-                    <td>Vendor B</td>
-                    <td>50</td>
-                    <td>2</td>
-                    <td class="badge-lolos">LOLOS</td>
-                    <td class="badge-lolos">LOLOS</td>
-                    <td class="badge-return">DELAY</td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>18 Jun 2026</td>
-                    <td>K-1-ABU-ABU</td>
-                    <td>Vendor C</td>
-                    <td>3</td>
-                    <td>20</td>
-                    <td class="badge-return">RETUR</td>
-                    <td class="badge-return">RETURN</td>
-                    <td class="badge-return">DELAY</td>
-                  </tr>
+                <tbody id="qc-tbody">
+                  <!-- Dynamic Data -->
                 </tbody>
               </table>
             </div>
+            <div id="qc-pagination" class="pagination"></div>
           </article>
         </div>
 
@@ -442,28 +229,12 @@
                     <th>Return</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>Vendor A</td>
-                    <td>K-1-PUTIH</td>
-                    <td>2</td>
-                    <td>10</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>1</td>
-                  </tr>
-                  <tr>
-                    <td>Vendor B</td>
-                    <td>K-1-HITAM</td>
-                    <td>2</td>
-                    <td>63</td>
-                    <td>2</td>
-                    <td>2</td>
-                    <td>0</td>
-                  </tr>
+                <tbody id="defect-pemesanan-tbody">
+                  <!-- Dynamic Data -->
                 </tbody>
               </table>
             </div>
+            <div id="defect-pemesanan-pagination" class="pagination"></div>
           </article>
 
           <article class="card reveal">
@@ -477,20 +248,12 @@
                     <th>Total Delay</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>Vendor A</td>
-                    <td>2</td>
-                    <td>0</td>
-                  </tr>
-                  <tr>
-                    <td>Vendor B</td>
-                    <td>2</td>
-                    <td>1</td>
-                  </tr>
+                <tbody id="defect-pengiriman-tbody">
+                  <!-- Dynamic Data -->
                 </tbody>
               </table>
             </div>
+            <div id="defect-pengiriman-pagination" class="pagination"></div>
           </article>
         </div>
       </section>
@@ -521,67 +284,8 @@
                     <th>Margin (kg)</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>1 Jun 2026</td>
-                    <td class="badge-lolos">IN</td>
-                    <td>K-1-PUTIH</td>
-                    <td>Vendor A</td>
-                    <td>100</td>
-                    <td>-</td>
-                    <td>100</td>
-                    <td>400</td>
-                  </tr>
-                  <tr>
-                    <td>2 Jun 2026</td>
-                    <td class="badge-lolos">IN</td>
-                    <td>K-1-HITAM</td>
-                    <td>Vendor B</td>
-                    <td>90</td>
-                    <td>-</td>
-                    <td>190</td>
-                    <td>310</td>
-                  </tr>
-                  <tr>
-                    <td>3 Jun 2026</td>
-                    <td class="badge-lolos">IN</td>
-                    <td>K-1-ABU-ABU</td>
-                    <td>Vendor C</td>
-                    <td>98</td>
-                    <td>-</td>
-                    <td>288</td>
-                    <td>212</td>
-                  </tr>
-                  <tr>
-                    <td>4 Jun 2026</td>
-                    <td class="badge-lolos">IN</td>
-                    <td>K-1-PUTIH</td>
-                    <td>Vendor A</td>
-                    <td>100</td>
-                    <td>-</td>
-                    <td>388</td>
-                    <td>112</td>
-                  </tr>
-                  <tr>
-                    <td>5 Jun 2026</td>
-                    <td class="badge-return">OUT</td>
-                    <td>K-1-PUTIH</td>
-                    <td>Vendor B</td>
-                    <td>-</td>
-                    <td>98</td>
-                    <td>290</td>
-                    <td>210</td>
-                  </tr>
-                  <tr>
-                    <td>10 Jun 2026</td>
-                    <td class="badge-return">OUT</td>
-                    <td>K-1-PUTIH</td>
-                    <td>Vendor B</td>
-                    <td>-</td>
-                    <td>45</td>
-                    <td>245</td>
-                    <td>255</td>
-                  </tr>
+                <tbody id="fifo-tbody">
+                  <!-- Dynamic Data -->
                 </tbody>
               </table>
             </div>
@@ -598,7 +302,6 @@
         </div>
       </section>
     </main>
-
     <!-- Footer -->
     <footer class="site-footer">
       <div class="container">
