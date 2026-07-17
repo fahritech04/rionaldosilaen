@@ -6,12 +6,11 @@
     <title>Visualisasi Dashboard - Rionaldo Fransiskus Silaen</title>
     <meta name="description" content="Dashboard visualisasi data Tugas Akhir: MRP, Quality Control, FIFO, dan VPI untuk analitik vendor dan stok gudang." />
     <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg" />
-    <!-- Google Fonts: Space Grotesk & DM Serif Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    <!-- Dynamic Cache-Busting untuk CSS (Otomatis tanpa edit manual lagi) -->
+    <!-- Dynamic Cache-Busting untuk CSS -->
     <script>
       document.write('<link rel="stylesheet" href="assets/css/style.css?v=' + new Date().getTime() + '" />');
     </script>
@@ -22,7 +21,7 @@
     <!-- Global Loading Overlay -->
     <div id="global-loader" class="global-loader">
       <div class="spinner"></div>
-      <p style="text-align:center;">Sinkronisasi Data...</p>
+      <p style="text-align: center">Sinkronisasi Data...</p>
     </div>
 
     <!-- Header -->
@@ -73,12 +72,12 @@
               <table class="stock-table">
                 <thead>
                   <tr id="stock-thead">
-                    <!-- kolom material diisi dinamis oleh script.js -->
+                    <!-- kolom material diisi oleh script.js -->
                   </tr>
                 </thead>
                 <tbody>
                   <tr id="stock-tbody">
-                    <!-- nilai stok diisi dinamis oleh script.js -->
+                    <!-- nilai stok diisi oleh script.js -->
                   </tr>
                 </tbody>
               </table>
@@ -181,26 +180,26 @@
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th style="min-width: 50px;">No.</th>
-                    <th style="min-width: 120px;">Tanggal Masuk</th>
-                    <th style="min-width: 120px;">Kode Material</th>
-                    <th style="min-width: 100px;">Vendor</th>
-                    <th style="min-width: 150px;">Deskripsi Defect</th>
-                    <th style="min-width: 100px;">Ukuran Sampel (n)</th>
-                    <th style="min-width: 100px;">Kode Sampel</th>
-                    <th style="min-width: 80px;">Ac &le;</th>
-                    <th style="min-width: 80px;">Re &ge;</th>
-                    <th style="min-width: 100px;">Cacat Ditemukan</th>
-                    <th style="min-width: 100px;">Foto Bukti?</th>
-                    <th style="min-width: 120px;">Hasil AQL 2.5</th>
-                    <th style="min-width: 180px;">Keputusan (LOLOS/RETUR/HOLD)</th>
-                    <th style="min-width: 150px;">Validasi Supervisor</th>
-                    <th style="min-width: 150px;">Koordinasi Vendor</th>
-                    <th style="min-width: 120px;">Hasil Akhir</th>
-                    <th style="min-width: 150px;">Jadwal Pengiriman PO</th>
-                    <th style="min-width: 150px;">Tanggal Barang Sampai</th>
-                    <th style="min-width: 150px;">Status Pengiriman</th>
-                    <th style="min-width: 150px;">Keterangan</th>
+                    <th style="min-width: 50px">No.</th>
+                    <th style="min-width: 120px">Tanggal Masuk</th>
+                    <th style="min-width: 120px">Kode Material</th>
+                    <th style="min-width: 100px">Vendor</th>
+                    <th style="min-width: 150px">Deskripsi Defect</th>
+                    <th style="min-width: 100px">Ukuran Sampel (n)</th>
+                    <th style="min-width: 100px">Kode Sampel</th>
+                    <th style="min-width: 80px">Ac &le;</th>
+                    <th style="min-width: 80px">Re &ge;</th>
+                    <th style="min-width: 100px">Cacat Ditemukan</th>
+                    <th style="min-width: 100px">Foto Bukti?</th>
+                    <th style="min-width: 120px">Hasil AQL 2.5</th>
+                    <th style="min-width: 180px">Keputusan (LOLOS/RETUR/HOLD)</th>
+                    <th style="min-width: 150px">Validasi Supervisor</th>
+                    <th style="min-width: 150px">Koordinasi Vendor</th>
+                    <th style="min-width: 120px">Hasil Akhir</th>
+                    <th style="min-width: 150px">Jadwal Pengiriman PO</th>
+                    <th style="min-width: 150px">Tanggal Barang Sampai</th>
+                    <th style="min-width: 150px">Status Pengiriman</th>
+                    <th style="min-width: 150px">Keterangan</th>
                   </tr>
                 </thead>
                 <tbody id="qc-tbody">
@@ -212,10 +211,10 @@
           </article>
         </div>
 
-        <!-- Administrasi Defect Summary -->
+        <!-- Administrasi Vendor Summary -->
         <div class="charts-section">
           <article class="card reveal">
-            <p class="eyebrow">Administrasi Defect — Pemesanan & Cacat</p>
+            <p class="eyebrow">Administrasi Vendor — Pemesanan & Cacat</p>
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
@@ -238,7 +237,7 @@
           </article>
 
           <article class="card reveal">
-            <p class="eyebrow">Administrasi Defect — Pengiriman</p>
+            <p class="eyebrow">Administrasi Vendor — Pengiriman</p>
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
