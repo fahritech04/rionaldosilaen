@@ -134,8 +134,7 @@ function hexToRgba(hex, alpha) {
 }
 
 // ==========================================
-// CHART DATA DEFINITIONS (Data-Driven, DRY)
-// All data verified from Excel source file.
+// CHART DATA
 // ==========================================
 const chartDefinitions = [
   // --- DASHBOARD SECTION ---
@@ -287,7 +286,7 @@ function initCharts() {
 }
 
 // ==========================================
-// THEME UPDATER (Single Reusable Loop)
+// THEME UPDATER
 // ==========================================
 function updateChartsTheme(theme) {
   const colors = getColors(theme);
@@ -471,7 +470,7 @@ async function fetchDashboardData() {
   }
 
   try {
-    // Tambahkan parameter waktu untuk mencegah browser menggunakan Cache lama (Cache-Busting)
+    // Menambahkan parameter waktu untuk mencegah browser menggunakan Cache lama (Cache-Busting)
     const fetchUrl = WEB_APP_URL + (WEB_APP_URL.includes("?") ? "&" : "?") + "t=" + new Date().getTime();
     const response = await fetch(fetchUrl);
     const data = await response.json();
@@ -491,7 +490,6 @@ async function fetchDashboardData() {
   } finally {
     if (loader) {
       loader.classList.add("hidden");
-      // Hardcode hide just to be 100% sure
       setTimeout(() => {
         loader.style.display = "none";
       }, 300);
@@ -586,15 +584,15 @@ function updateDashboardUI(data) {
   //   baris N+1..  = detail transaksi FIFO
   // ================================================================
   if (data.fifo_stok_data && data.fifo_stok_data.length > 0) {
-    const stockRows = data.fifo_stok_data; // Sudah murni data stok dari K8:N10
+    const stockRows = data.fifo_stok_data;
 
-    // Update Judul FIFO sesuai Spreadsheet (D2)
+    // Update Judul FIFO sesuai Spreadsheet
     if (data.fifo_title) {
       const fifoTitleEl = document.querySelector("#fifo .section-title");
       if (fifoTitleEl) fifoTitleEl.innerText = data.fifo_title;
     }
 
-    // Tabel sisa stok — header = nama material, nilai = sisa stok (dari spreadsheet)
+    // Tabel sisa stok — header = nama material, nilai = sisa stok
     const stockThead = document.getElementById("stock-thead");
     const stockTbody = document.getElementById("stock-tbody");
     if (stockThead && stockTbody && stockRows.length > 0) {
@@ -700,7 +698,7 @@ function updateDashboardUI(data) {
 
   // ================================================================
   // 5. RIWAYAT QC LOG
-  // qc_data: langsung dari spreadsheet, semua kolom apa adanya
+  // qc_data: langsung dari spreadsheet
   // ================================================================
   if (data.qc_data && data.qc_data.length > 0) {
     // Filter baris kosong: cukup pastikan Tanggal ada isinya
