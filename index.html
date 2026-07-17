@@ -36,6 +36,7 @@
             <a href="#dashboard" class="nav-link active" data-section="dashboard">Dashboard</a>
             <a href="#qc" class="nav-link" data-section="qc">Quality Control</a>
             <a href="#fifo" class="nav-link" data-section="fifo">FIFO</a>
+            <a href="#mrp" class="nav-link" data-section="mrp">MRP</a>
           </nav>
 
           <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
@@ -300,6 +301,43 @@
           </article>
         </div>
       </section>
+
+      <!-- ============================================ -->
+      <!-- SECTION: MRP                                 -->
+      <!-- ============================================ -->
+      <section id="mrp" class="dashboard-section">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Material Requirements Planning</p>
+          <h2 class="section-title">Implementasi MRP (Metode LFL, Lead Time 1 Minggu)</h2>
+        </div>
+
+        <div class="charts-section single-col">
+          <article class="card reveal">
+            <p class="eyebrow">Tabel MRP — Defect Rate 2,5%</p>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead id="mrp-thead">
+                  <!-- Header dinamis dari script.js -->
+                </thead>
+                <tbody id="mrp-tbody">
+                  <!-- Dynamic Data -->
+                </tbody>
+              </table>
+            </div>
+            <div id="mrp-pagination" class="pagination"></div>
+          </article>
+        </div>
+
+        <div class="charts-section single-col">
+          <article class="card chart-card reveal">
+            <p class="eyebrow">Grafik MRP — Kebutuhan vs Pelepasan Pesanan</p>
+            <div class="chart-container">
+              <canvas id="mrpChart"></canvas>
+            </div>
+          </article>
+        </div>
+      </section>
+
     </main>
     <!-- Footer -->
     <footer class="site-footer">

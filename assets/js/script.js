@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz2kN9If3fZZwFqJWPhroXuoaPeZaRCE0wiwCK2xyRSKl4MwZmGm0_5Q0q1qhuBQCOoqQ/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz5kdEfoc8Guqj5IQUDlHvX49-ISxJ5CRqBhASn5YUA9n5A3H5qfaMZ5D_ZxTXckV6mew/exec";
 
 // ==========================================
 // Tema & UI Logic
@@ -180,6 +180,21 @@ const chartDefinitions = [
     },
     options: { scales: { y: { max: 2.5, ticks: { stepSize: 0.5 } } } },
   },
+  // --- MRP SECTION ---
+  {
+    id: "mrpChart",
+    type: "line",
+    data: {
+      labels: [],
+      datasets: [
+        { label: "GR — Kebutuhan Kotor", data: [], colorKey: "accent", tension: 0.3 },
+        { label: "NR — Kebutuhan Bersih", data: [], colorKey: "primary", tension: 0.3 },
+        { label: "PORel — Pelepasan Pesanan", data: [], colorKey: "gray", tension: 0.3, borderDash: [6, 4] },
+      ],
+    },
+    options: { scales: { y: { beginAtZero: true, max: 60, ticks: { stepSize: 10 } } } },
+  },
+
   // --- FIFO SECTION ---
   {
     id: "fifoChart",
@@ -743,6 +758,58 @@ function updateDashboardUI(data) {
         </tr>`;
       },
     });
+  }
+
+  // ================================================================
+  // 6. MRP CHART + TABEL MRP
+  // ================================================================
+  if (data.mrp_data && data.mrp_data.length > 0) {
+    // Cari baris header MRP
+    const mhIdx = data.mrp_data.findIndex((r) => str(r[0]).toLowerCase().includes("komponen") || str(r[2]).toLowerCase().includes("minggu 0"));
+
+    if (mhIdx !== -1) {
+      const headerRow = data.mrp_data[mhIdx];
+      const mrpRows = data.mrp_data.slice(mhIdx + 1);
+
+      let satuanIdx = headerRow.findIndex((c) => str(c).toLowerCase().includes("satuan"));
+      if (satuanIdx === -1) satuanIdx = headerRow.length - 2;
+
+      const timeCols = headerRow.slice(2, satuanIdx);
+      const mrpLabels = timeCols.filter((c) => str(c) !== "");
+
+      const rowNums = (row) => (row || []).slice(2, 2 + mrpLabels.length).map((v) => num(v));
+      const mkLbl = (row) => str(row[0]) + (str(row[1]) ? ` — ${str(row[1])}` : "");
+
+      const grRow = mrpRows[0] || [];
+      const nrRow = mrpRows[3] || [];
+      const porelRow = mrpRows[5] || [];
+
+      updateChartData("mrpChart", mrpLabels, [rowNums(grRow), rowNums(nrRow), rowNums(porelRow)], [mkLbl(grRow), mkLbl(nrRow), mkLbl(porelRow)]);
+
+      const mrpThead = document.querySelector("#mrp-thead");
+      if (mrpThead) {
+        mrpThead.innerHTML = `<tr><th>Komponen MRP</th>` + mrpLabels.map((l) => `<th>${l}</th>`).join("") + `<th>${str(headerRow[satuanIdx])}</th></tr>`;
+      }
+
+      initPaginatedTable({
+        id: "mrp",
+        data: mrpRows,
+        itemsPerPage: 6,
+        renderRow: (r) => {
+          const dataCells = r
+            .slice(2, 2 + mrpLabels.length)
+            .map((c) => `<td>${str(c)}</td>`)
+            .join("");
+          const satuan = str(r[satuanIdx]);
+
+          return `<tr>
+            <td><strong>${str(r[0])}</strong><br><span style="font-size:0.85em;opacity:0.8">${str(r[1])}</span></td>
+            ${dataCells}
+            <td style="font-weight:bold; color:var(--accent)">${satuan}</td>
+          </tr>`;
+        },
+      });
+    }
   }
 }
 
