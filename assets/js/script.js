@@ -1,8 +1,6 @@
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxBkc9UbqymJXpZBoDCszjOKXdomOdLlJjUH62heIBrn9KTjP7yXe7AB90Y-IEVt6kQlw/exec";
 
-// ==========================================
-// Tema & UI Logic
-// ==========================================
+// Logika Tema & Tampilan Antarmuka
 const themeToggle = document.getElementById("theme-toggle");
 const htmlEl = document.documentElement;
 
@@ -23,9 +21,7 @@ function updateToggleIcon(theme) {
   themeToggle.innerHTML = theme === "dark" ? '<span class="icon">☀️</span>' : '<span class="icon">🌙</span>';
 }
 
-// ==========================================
-// MOBILE MENU LOGIC
-// ==========================================
+// Logika Menu Mobile
 const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
 const navTabs = document.querySelector(".nav-tabs");
 
@@ -34,7 +30,7 @@ mobileMenuToggle.addEventListener("click", () => {
   navTabs.classList.toggle("is-open");
 });
 
-// Close mobile menu when a link is clicked
+// Tutup menu mobile ketika link diklik
 document.querySelectorAll(".nav-link").forEach((link) => {
   link.addEventListener("click", () => {
     if (window.innerWidth <= 900) {
@@ -43,9 +39,7 @@ document.querySelectorAll(".nav-link").forEach((link) => {
     }
   });
 });
-// ==========================================
-// SCROLL SPY — Active Nav Link
-// ==========================================
+// Deteksi scroll untuk navigasi link aktif
 const navLinks = document.querySelectorAll(".nav-link[data-section]");
 const sections = document.querySelectorAll(".dashboard-section");
 
@@ -64,15 +58,13 @@ window.addEventListener(
   { passive: true },
 );
 
-// ==========================================
-// INTERSECTION OBSERVER — Reveal Animations
-// ==========================================
+// Deteksi elemen masuk ke layar untuk animasi muncul
 const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("visible");
-        revealObserver.unobserve(entry.target); // Animate only once
+        revealObserver.unobserve(entry.target); // Jalankan animasi hanya sekali
       }
     });
   },
@@ -81,13 +73,11 @@ const revealObserver = new IntersectionObserver(
 
 document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
 
-// ==========================================
-// CHART.JS — CONFIGURATION
-// ==========================================
+// Konfigurasi Chart.js
 Chart.defaults.font.family = "'Space Grotesk', sans-serif";
 const activeCharts = [];
 
-// Dynamic theme color palette
+// Palet warna tema dinamis
 function getColors(theme) {
   const isDark = theme === "dark";
   return {
@@ -103,7 +93,7 @@ function getColors(theme) {
   };
 }
 
-// Reusable tooltip config generator
+// Pembuat konfigurasi tooltip berulang
 function getTooltipConfig(colors) {
   return {
     backgroundColor: colors.ttBg,
@@ -125,7 +115,7 @@ function getTooltipConfig(colors) {
   };
 }
 
-// Hex to RGBA helper (for line chart fills)
+// Konversi warna Hex ke RGBA
 function hexToRgba(hex, alpha) {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -133,11 +123,9 @@ function hexToRgba(hex, alpha) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-// ==========================================
-// CHART DATA
-// ==========================================
+// Definisi Konfigurasi Grafik
 const chartDefinitions = [
-  // --- DASHBOARD SECTION ---
+  // --- Bagian Dashboard ---
   {
     id: "vpiChart",
     type: "pie",
@@ -171,7 +159,7 @@ const chartDefinitions = [
     },
     options: { scales: { y: { max: 2.5, ticks: { stepSize: 0.5 } } } },
   },
-  // --- MRP SECTION ---
+  // --- Bagian MRP ---
   {
     id: "mrpChart",
     type: "line",
@@ -186,7 +174,7 @@ const chartDefinitions = [
     options: { scales: { y: { beginAtZero: true, max: 60, ticks: { stepSize: 10 } } } },
   },
 
-  // --- FIFO SECTION ---
+  // --- Bagian FIFO ---
   {
     id: "fifoChart",
     type: "line",
@@ -201,9 +189,7 @@ const chartDefinitions = [
   },
 ];
 
-// ==========================================
-// CHART INITIALIZATION (Single Reusable Loop)
-// ==========================================
+// Inisialisasi Seluruh Grafik
 function initCharts() {
   const currentTheme = htmlEl.getAttribute("data-theme");
   const colors = getColors(currentTheme);
@@ -212,7 +198,7 @@ function initCharts() {
   chartDefinitions.forEach((config) => {
     const ctx = document.getElementById(config.id).getContext("2d");
 
-    // Process each dataset based on chart type
+    // Memproses setiap dataset berdasarkan tipe grafiknya
     const processedDatasets = config.data.datasets.map((ds) => {
       const bgColor = Array.isArray(ds.colorKey) ? ds.colorKey.map((k) => colors[k]) : colors[ds.colorKey];
 
@@ -220,12 +206,12 @@ function initCharts() {
       if (ds.label) baseDs.label = ds.label;
 
       if (ds.isPie) {
-        // PIE: Clean glassmorphism shape without borders, smooth offset
+        // Grafik Lingkaran: Bentuk tanpa batas dengan efek halus
         baseDs.borderWidth = 0;
         baseDs.hoverBorderWidth = 0;
         baseDs.hoverOffset = 8;
       } else if (config.type === "line") {
-        // LINE: border color, tension, fill, points
+        // Grafik Garis: warna garis, tegangan, isian, dan titik
         baseDs.borderColor = bgColor;
         baseDs.backgroundColor = ds.fill ? hexToRgba(bgColor, 0.15) : "transparent";
         baseDs.pointBackgroundColor = bgColor;
@@ -236,7 +222,7 @@ function initCharts() {
         baseDs.borderWidth = 2.5;
         if (ds.borderDash) baseDs.borderDash = ds.borderDash;
       } else {
-        // BAR: radius, thickness
+        // Grafik Batang: lekukan sudut dan ketebalan
         baseDs.borderRadius = ds.borderRadius || 4;
         if (ds.barThickness) baseDs.barThickness = ds.barThickness;
         else {
@@ -247,13 +233,13 @@ function initCharts() {
       return baseDs;
     });
 
-    // Build chart options
+    // Membangun opsi grafik
     const baseOptions = {
       responsive: true,
       maintainAspectRatio: false,
       animation: {
         duration: 800,
-        easing: "easeOutQuart", // Non-bouncy to prevent cursor flicker
+        easing: "easeOutQuart", // Efek animasi linear untuk mencegah flicker
       },
       animations: {
         x: { duration: 0 }, // Matikan animasi geser horizontal
@@ -265,7 +251,7 @@ function initCharts() {
       ...config.options,
     };
 
-    // Inject grid colors for axis-based charts
+    // Mewarnai grid untuk grafik bersumbu
     if ((config.type === "bar" || config.type === "line") && baseOptions.scales) {
       Object.keys(baseOptions.scales).forEach((axis) => {
         const isHiddenGrid = (config.options.indexAxis === "y" && axis === "y") || (config.options.indexAxis !== "y" && axis === "x");
@@ -287,15 +273,13 @@ function initCharts() {
   });
 }
 
-// ==========================================
-// THEME UPDATER
-// ==========================================
+// Fungsi Pembaruan Tema
 function updateChartsTheme(theme) {
   const colors = getColors(theme);
   Chart.defaults.color = colors.text;
 
   activeCharts.forEach(({ instance: chart, config }) => {
-    // Update dataset colors
+    // Memperbarui warna dataset grafik
     chart.data.datasets.forEach((ds, i) => {
       const origDs = config.data.datasets[i];
       const newColor = Array.isArray(origDs.colorKey) ? origDs.colorKey.map((k) => colors[k]) : colors[origDs.colorKey];
@@ -311,7 +295,7 @@ function updateChartsTheme(theme) {
       }
     });
 
-    // Update scales
+    // Memperbarui skala grafik
     if (chart.options.scales) {
       ["x", "y"].forEach((axis) => {
         if (chart.options.scales[axis]) {
@@ -321,11 +305,11 @@ function updateChartsTheme(theme) {
       });
     }
 
-    // Update plugins
+    // Memperbarui plugin grafik
     chart.options.plugins.legend.labels.color = colors.text;
     Object.assign(chart.options.plugins.tooltip, getTooltipConfig(colors));
 
-    // Sync transition update (400ms CSS)
+    // Sinkronisasi transisi CSS 400ms
     const originalDuration = chart.options.animation.duration;
     chart.options.animation.duration = 400;
     chart.update();
@@ -335,9 +319,7 @@ function updateChartsTheme(theme) {
   });
 }
 
-// ==========================================
-// DYNAMIC CHART UPDATER
-// ==========================================
+// Pembaruan Grafik Dinamis
 function updateChartData(chartId, newLabels, newDatasetsData, newDatasetLabels = null) {
   const chartObj = activeCharts.find((c) => c.config.id === chartId);
   if (!chartObj) return;
@@ -353,16 +335,12 @@ function updateChartData(chartId, newLabels, newDatasetsData, newDatasetLabels =
     }
   });
 
-  chart.reset(); // Reset posisi elemen ke 0 (bawah)
-  chart.update(); // Animasi ulang tumbuh ke atas
+  chart.reset();
+  chart.update();
 }
-// ==========================================
 // START
 initCharts();
-
-// ==========================================
-// TOAST NOTIFICATION LOGIC
-// ==========================================
+// Logika Notifikasi Toast
 function showToast(message, type = "success", autoClose = true) {
   let container = document.querySelector(".toast-container");
   if (!container) {
@@ -407,9 +385,7 @@ function showToast(message, type = "success", autoClose = true) {
   }
 }
 
-// ==========================================
 // UNIVERSAL PAGINATION LOGIC
-// ==========================================
 const paginationState = {};
 
 function initPaginatedTable(config) {
@@ -461,9 +437,7 @@ function renderPaginationControls(id) {
   }
 }
 
-// ------------------------------------------
 // MAIN FETCH DATA
-// ------------------------------------------
 async function fetchDashboardData() {
   if (!WEB_APP_URL) return;
 
@@ -474,7 +448,7 @@ async function fetchDashboardData() {
   }
 
   try {
-    // Menambahkan parameter waktu untuk mencegah browser menggunakan Cache lama (Cache-Busting)
+    // Menambahkan parameter waktu untuk mencegah browser menggunakan Cache lama
     const fetchUrl = WEB_APP_URL + (WEB_APP_URL.includes("?") ? "&" : "?") + "t=" + new Date().getTime();
     const response = await fetch(fetchUrl);
     const data = await response.json();
@@ -501,54 +475,11 @@ async function fetchDashboardData() {
   }
 }
 
-// ==========================================
-// REUSABLE FORM SUBMISSION WITH SYNC
-// ==========================================
-async function submitFormWithSync(formElement, url, successMessage) {
-  const formData = new FormData(formElement);
-  const data = Object.fromEntries(formData.entries());
-
-  showToast("Menyimpan data...", "loading");
-
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-    });
-
-    const result = await response.json();
-    if (result.status === "success") {
-      showToast(successMessage, "success");
-      formElement.reset();
-
-      // Jeda 1 detik agar user membaca "Berhasil Tersimpan", lalu loading sinkronisasi
-      setTimeout(() => {
-        showToast("Sinkronisasi data terbaru...", "loading");
-        fetchDashboardData();
-      }, 1200);
-
-      return true;
-    } else {
-      showToast("Gagal menyimpan: " + result.message, "error");
-      return false;
-    }
-  } catch (error) {
-    showToast("Terjadi kesalahan jaringan", "error");
-    console.error("Submit error:", error);
-    return false;
-  }
-}
-
 function updateDashboardUI(data) {
   const num = (v) => parseFloat(String(v || "0").replace(",", ".")) || 0;
   const str = (v) => String(v || "").trim();
 
-  // ================================================================
-  // 1. VENDOR TERBAIK + VPI CHART + TABEL VPI
-  // vpi_scoring_data: [Vendor, Quality, Delivery, Price, VPI, Ranking] — D23:I25
-  // vpi_raw_data:     [Vendor, Qty Diterima, Qty Defect, Total Kirim, Tepat Waktu, Harga] — D8:I10
-  // ================================================================
+  // Data Vendor Terbaik, Grafik VPI, dan Tabel VPI
   if (data.vpi_scoring_data && data.vpi_scoring_data.length > 0) {
     // Vendor Terbaik = Ranking == 1 (kolom index 5)
     const best = data.vpi_scoring_data.find((r) => str(r[5]) === "1" || str(r[5]) === "1.0");
@@ -575,7 +506,6 @@ function updateDashboardUI(data) {
       });
 
       // Urutkan berdasarkan Ranking (index 10) secara ascending
-      // Jika ranking 0 atau tidak ada (misal '-'), pindahkan ke bawah
       mergedData.sort((a, b) => {
         let rankA = num(a[10]);
         let rankB = num(b[10]);
@@ -618,13 +548,7 @@ function updateDashboardUI(data) {
     }
   }
 
-  // ================================================================
-  // 2. SISA STOK GUDANG + CHART FIFO
-  // fifo_stok_data:
-  //   baris 0..N-1 = sisa stok [Nama, Masuk, Keluar, Sisa]
-  //   baris N      = header detail ("Jenis (IN/OUT)", ...)
-  //   baris N+1..  = detail transaksi FIFO
-  // ================================================================
+  // Data Sisa Stok Gudang dan Grafik FIFO
   if (data.fifo_stok_data && data.fifo_stok_data.length > 0) {
     const stockRows = data.fifo_stok_data;
 
@@ -642,11 +566,9 @@ function updateDashboardUI(data) {
       stockTbody.innerHTML = stockRows.map((r) => `<td>${str(r[3])}</td>`).join("");
     }
 
-    // Tabel FIFO Detail & Grafik Kapasitas
+    // Detail Tabel FIFO dan Kapasitas
     if (data.fifo_detail_data && Object.keys(data.fifo_detail_data).length > 0) {
-      // -----------------------------------------------------------
-      // Global FIFO Recommendation Logic (Semua Material)
-      // -----------------------------------------------------------
+      // Logika Rekomendasi FIFO Keseluruhan
       const recEl = document.getElementById("fifo-recommendation");
       if (recEl) {
         const materials = ["K-1-PUTIH", "K-1-HITAM", "K-1-ABU-ABU"];
@@ -692,9 +614,7 @@ function updateDashboardUI(data) {
         `;
       }
 
-      // -----------------------------------------------------------
-      // Render FIFO Table & Chart by Selected Material
-      // -----------------------------------------------------------
+      // Proses Render Tabel & Grafik FIFO per Material
       const fifoSelect = document.getElementById("fifo-material-select");
 
       const renderFifoMaterial = (materialName) => {
@@ -709,15 +629,15 @@ function updateDashboardUI(data) {
 
         const detailRows = matData.slice(1);
 
-        // Perhitungan Running Total Kapasitas 500kg
+        // Hitung sisa kapasitas dengan asumsi total 500kg
         const chartLabels = [];
         const chartKumulatifMasuk = [];
         const chartKumulatifKeluar = [];
 
         detailRows.forEach((r) => {
-          const tanggal = str(r[1]); // TANGGAL ada di index 1
-          const kumulatifMasuk = num(r[8]); // Kumulatif Masuk index 8
-          const kumulatifKeluar = num(r[9]); // Kumulatif Keluar index 9
+          const tanggal = str(r[1]);
+          const kumulatifMasuk = num(r[8]);
+          const kumulatifKeluar = num(r[9]);
           const masuk = num(r[5]);
           const keluar = num(r[6]);
 
@@ -736,7 +656,7 @@ function updateDashboardUI(data) {
         // Chart Kumulatif Masuk vs Keluar
         updateChartData("fifoChart", chartLabels, [chartKumulatifMasuk, chartKumulatifKeluar], [`Kumulatif Masuk`, `Kumulatif Keluar`]);
 
-        // Tabel Data 10 Kolom (Dibalik agar terbaru di atas)
+        // Tabel dengan urutan data terbaru di posisi atas
         initPaginatedTable({
           id: "fifo",
           data: [...detailRows].reverse(),
@@ -762,24 +682,15 @@ function updateDashboardUI(data) {
     }
   }
 
-  // ================================================================
-  // 3. PERFORMA & PESANAN CHART + TABEL DEFECT
-  // defect_data: [Vendor, Material, TotalPesanan, ..., r[6]=Retur,
-  //              ..., r[10]=TotalKirim, r[11]=Terlambat, r[12]=TepatWaktu]
-  // ================================================================
+  // 3. Data Grafik Performa & Pesanan (Defect)
   if (data.defect_data && data.defect_data.length > 1) {
     const defectHeader = data.defect_data[0]; // B6:N6
     const defectRows = data.defect_data.slice(1); // Baris data vendor
 
     const labels = defectRows.map((r) => str(r[0]));
-
-    // (Data performaChart sudah dipindah ke blok riwayat_vendor_data)
   }
 
-  // ================================================================
-  // 5. RIWAYAT QC LOG
-  // qc_data: langsung dari spreadsheet
-  // ================================================================
+  // Data Riwayat Inspeksi Quality Control (QC)
   if (data.qc_data && data.qc_data.length > 0) {
     // Filter baris kosong: cukup pastikan Tanggal ada isinya
     const validQC = data.qc_data
@@ -818,9 +729,7 @@ function updateDashboardUI(data) {
     });
   }
 
-  // ================================================================
   // 6. MRP CHART + TABEL MRP
-  // ================================================================
   if (data.mrp_data && data.mrp_data.length > 0) {
     // Cari baris header MRP
     const mhIdx = data.mrp_data.findIndex((r) => str(r[0]).toLowerCase().includes("komponen") || str(r[2]).toLowerCase().includes("minggu 0"));
@@ -871,8 +780,5 @@ function updateDashboardUI(data) {
   }
 }
 
-// Panggil fetch awal jika URL sudah diset
 fetchDashboardData();
-
-// Footer: dynamic year
 document.getElementById("footer-year").textContent = new Date().getFullYear();

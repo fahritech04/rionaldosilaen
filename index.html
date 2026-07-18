@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    <!-- Dynamic Cache-Busting untuk CSS -->
     <script>
       document.write('<link rel="stylesheet" href="assets/css/style.css?v=' + new Date().getTime() + '" />');
     </script>
@@ -18,7 +17,7 @@
   <body>
     <div class="texture-layer" aria-hidden="true"></div>
 
-    <!-- Global Loading Overlay -->
+    <!-- loading global -->
     <div id="global-loader" class="global-loader">
       <div class="spinner"></div>
       <p style="text-align: center">Sinkronisasi Data...</p>
@@ -51,16 +50,13 @@
     </header>
 
     <main class="dashboard-container">
-      <!-- ============================================ -->
-      <!-- SECTION: DASHBOARD OVERVIEW                  -->
-      <!-- ============================================ -->
+      <!-- Dashboard Utama -->
       <section id="dashboard" class="dashboard-section">
         <div class="section-heading reveal">
           <p class="eyebrow">Overview</p>
           <h2 class="section-title">Dashboard Utama</h2>
         </div>
 
-        <!-- Summary Cards -->
         <div class="summary-section">
           <article class="card summary-card reveal">
             <p class="eyebrow">Vendor Terbaik</p>
@@ -80,12 +76,12 @@
               <table class="stock-table">
                 <thead>
                   <tr id="stock-thead">
-                    <!-- kolom material diisi oleh script.js -->
+                    <!-- diisi script.js -->
                   </tr>
                 </thead>
                 <tbody>
                   <tr id="stock-tbody">
-                    <!-- nilai stok diisi oleh script.js -->
+                    <!-- diisi script.js -->
                   </tr>
                 </tbody>
               </table>
@@ -93,7 +89,6 @@
           </article>
         </div>
 
-        <!-- Main Charts -->
         <div class="charts-section">
           <article class="card chart-card reveal">
             <p class="eyebrow">Skor VPI per Vendor</p>
@@ -117,7 +112,7 @@
           </article>
         </div>
 
-        <!-- VPI Detail Tables -->
+        <!-- Tabel detail VPI -->
         <div class="charts-section">
           <article class="card reveal" style="grid-column: 1 / -1">
             <p class="eyebrow">Data Riwayat Vendor</p>
@@ -139,7 +134,7 @@
                   </tr>
                 </thead>
                 <tbody id="riwayat-vendor-tbody">
-                  <!-- Dynamic Data -->
+                  <!-- diisi script.js -->
                 </tbody>
               </table>
             </div>
@@ -148,9 +143,7 @@
         </div>
       </section>
 
-      <!-- ============================================ -->
-      <!-- SECTION: QUALITY CONTROL                     -->
-      <!-- ============================================ -->
+      <!-- Quality Control -->
       <section id="qc" class="dashboard-section">
         <div class="section-heading reveal">
           <p class="eyebrow">Quality Control</p>
@@ -180,7 +173,7 @@
                   </tr>
                 </thead>
                 <tbody id="qc-tbody">
-                  <!-- Dynamic Data -->
+                  <!-- diisi script.js -->
                 </tbody>
               </table>
             </div>
@@ -189,9 +182,7 @@
         </div>
       </section>
 
-      <!-- ============================================ -->
-      <!-- SECTION: FIFO                                -->
-      <!-- ============================================ -->
+      <!-- FIFO -->
       <section id="fifo" class="dashboard-section">
         <div class="section-heading reveal">
           <p class="eyebrow">First In First Out</p>
@@ -225,7 +216,7 @@
                   </tr>
                 </thead>
                 <tbody id="fifo-tbody">
-                  <!-- Dynamic Data -->
+                  <!-- diisi script.js -->
                 </tbody>
               </table>
             </div>
@@ -243,9 +234,7 @@
         </div>
       </section>
 
-      <!-- ============================================ -->
-      <!-- SECTION: MRP                                 -->
-      <!-- ============================================ -->
+      <!-- MRP -->
       <section id="mrp" class="dashboard-section">
         <div class="section-heading reveal">
           <p class="eyebrow">Material Requirements Planning</p>
@@ -258,10 +247,10 @@
             <div class="table-responsive">
               <table class="data-table">
                 <thead id="mrp-thead">
-                  <!-- Header dinamis dari script.js -->
+                  <!-- diisi script.js -->
                 </thead>
                 <tbody id="mrp-tbody">
-                  <!-- Dynamic Data -->
+                  <!-- diisi script.js -->
                 </tbody>
               </table>
             </div>
@@ -286,9 +275,7 @@
       </div>
     </footer>
 
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Dynamic Cache-Busting untuk JS -->
     <script>
       document.write('<script src="assets/js/script.js?v=' + new Date().getTime() + '"><\/script>');
     </script>

@@ -42,7 +42,7 @@
   color-scheme: dark;
 }
 
-/* Fix Dropdown options in dark mode fallback */
+/* Perbaiki warna teks dropdown saat mode gelap */
 [data-theme="dark"] option {
   background-color: var(--bg-alt);
   color: var(--text);
@@ -92,7 +92,7 @@ body::before {
 .site-header {
   position: sticky; top: 0; z-index: 100;
   background: var(--surface);
-  /* Mobile: blur dimatikan agar scroll HP lancar, dinyalakan di media query */
+  /* Mode mobile: matikan blur agar scroll lancar */
   border-bottom: 1px solid var(--line);
   transition: var(--transition);
 }
@@ -114,9 +114,9 @@ body::before {
 .nav-tabs {
   display: flex; align-items: center; gap: 4px;
   overflow-x: auto; -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none; /* Dukungan Firefox */
 }
-.nav-tabs::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+.nav-tabs::-webkit-scrollbar { display: none; } /* Dukungan Chrome dan Safari */
 
 .nav-link {
   text-decoration: none; color: var(--text-soft);
@@ -138,9 +138,9 @@ body::before {
 .theme-toggle:focus { outline: none; }
 .theme-toggle:hover { background: var(--line); }
 
-/* Hamburger Menu Toggle */
+/* Tombol Menu Hamburger */
 .mobile-toggle {
-  display: none; /* hidden on desktop */
+  display: none; /* Sembunyikan di tampilan komputer */
   background: transparent; border: none;
   padding: 8px; cursor: pointer;
   color: var(--text);
@@ -161,18 +161,18 @@ body::before {
 .hamburger::before { top: -6px; }
 .hamburger::after { bottom: -6px; }
 
-/* Hamburger Active State (X icon) */
+/* Status aktif menu hamburger (ikon X) */
 .mobile-toggle.is-active .hamburger { background: transparent; }
 .mobile-toggle.is-active .hamburger::before { transform: rotate(45deg); top: 0; }
 .mobile-toggle.is-active .hamburger::after { transform: rotate(-45deg); bottom: 0; }
 
-/* Mobile Menu Layout */
+/* Tata Letak Menu Mobile */
 @media (max-width: 900px) {
   .mobile-toggle { display: flex; }
   
   .nav-tabs {
     position: absolute;
-    top: 74px; /* match header height */
+    top: 74px; /* Sesuaikan dengan tinggi header */
     left: 0; right: 0;
     background: var(--bg);
     flex-direction: column;
@@ -181,7 +181,7 @@ body::before {
     border-bottom: 1px solid var(--line);
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     
-    /* Hidden state */
+    /* Status Tersembunyi */
     transform: translateY(-120%);
     opacity: 0;
     pointer-events: none;
@@ -228,7 +228,7 @@ body::before {
   box-shadow: var(--shadow);
   transition: var(--transition);
   display: flex; flex-direction: column; overflow: hidden;
-  /* Dihapus will-change: transform untuk menghemat memori VRAM HP */
+  /* Penghematan memori GPU di HP */
 }
 .card:hover {
   transform: translateY(-6px);
@@ -299,7 +299,7 @@ body::before {
   color: var(--accent);
 }
 
-/* Label baris kiri ("Sisa Stok (kg)") — tampil seperti header, bukan angka */
+/* Ubah label baris paling kiri menjadi gaya header */
 .stock-table .stock-row-label {
   font-family: "Space Grotesk", sans-serif;
   font-size: clamp(0.8rem, 1.5vw, 1rem);
@@ -316,7 +316,7 @@ body::before {
 .data-table td:first-child { font-weight: 600; text-align: left; }
 .data-table tbody tr:hover { background: var(--line); }
 
-/* Status Badges */
+/* Label Status Badges */
 .badge-lolos { color: var(--success) !important; font-weight: 700; }
 .badge-return { color: var(--danger) !important; font-weight: 700; }
 
@@ -372,7 +372,7 @@ body::before {
    ========================================== */
 @media (min-width: 768px) {
   .summary-section { grid-template-columns: repeat(2, 1fr); }
-  /* Efek blur (glassmorphism) berat HANYA diaktifkan di layar besar/laptop */
+  /* Aktifkan efek blur berat hanya di layar besar */
   .card, .site-header, .site-footer {
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   }
