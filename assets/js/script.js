@@ -154,7 +154,7 @@ const chartDefinitions = [
         { label: "Total Pengiriman Delay", data: [], colorKey: "primary" },
       ],
     },
-    options: { scales: { y: { max: 2.5, ticks: { stepSize: 0.5 } } } },
+    options: { scales: { y: { max: 8, ticks: { stepSize: 2 } } } },
   },
   {
     id: "pesananChart",
@@ -166,35 +166,7 @@ const chartDefinitions = [
         { label: "Jumlah Return", data: [], colorKey: "primary" },
       ],
     },
-    options: { scales: { y: { max: 2.5, ticks: { stepSize: 0.5 } } } },
-  },
-  // --- Bagian MRP ---
-  {
-    id: "mrpChart",
-    type: "line",
-    data: {
-      labels: [],
-      datasets: [
-        { label: "GR — Kebutuhan Kotor", data: [], colorKey: "accent", tension: 0.3 },
-        { label: "NR — Kebutuhan Bersih", data: [], colorKey: "primary", tension: 0.3 },
-        { label: "PORel — Pelepasan Pesanan", data: [], colorKey: "gray", tension: 0.3, borderDash: [6, 4] },
-      ],
-    },
-    options: { scales: { y: { beginAtZero: true, max: 60, ticks: { stepSize: 10 } } } },
-  },
-
-  // --- Bagian FIFO ---
-  {
-    id: "fifoChart",
-    type: "line",
-    data: {
-      labels: [],
-      datasets: [
-        { label: "Total Gudang (kg)", data: [], colorKey: "accent", tension: 0.3, fill: true },
-        { label: "Margin Kapasitas (kg)", data: [], colorKey: "primary", tension: 0.3, borderDash: [6, 4] },
-      ],
-    },
-    options: { scales: { y: { beginAtZero: true, max: 500, ticks: { stepSize: 100 } } } },
+    options: { scales: { y: { max: 8, ticks: { stepSize: 2 } } } },
   },
 ];
 
@@ -621,38 +593,10 @@ function updateDashboardUI(data) {
           document.querySelector("#fifo-tbody").innerHTML = "<tr><td colspan='10' style='text-align: center; padding: 16px;'>Data Kosong</td></tr>";
           const paginationEl = document.getElementById("fifo-pagination");
           if (paginationEl) paginationEl.innerHTML = "";
-          updateChartData("fifoChart", [], [[], []], ["Total Gudang", "Margin Kapasitas"]);
           return;
         }
 
         const detailRows = matData.slice(1);
-
-        // Hitung sisa kapasitas dengan asumsi total 500kg
-        const chartLabels = [];
-        const chartKumulatifMasuk = [];
-        const chartKumulatifKeluar = [];
-
-        detailRows.forEach((r) => {
-          const tanggal = str(r[1]);
-          const kumulatifMasuk = num(r[8]);
-          const kumulatifKeluar = num(r[9]);
-          const masuk = num(r[5]);
-          const keluar = num(r[6]);
-
-          if (masuk > 0 || keluar > 0) {
-            if (chartLabels.length > 0 && chartLabels[chartLabels.length - 1] === tanggal) {
-              chartKumulatifMasuk[chartKumulatifMasuk.length - 1] = kumulatifMasuk;
-              chartKumulatifKeluar[chartKumulatifKeluar.length - 1] = kumulatifKeluar;
-            } else {
-              chartLabels.push(tanggal);
-              chartKumulatifMasuk.push(kumulatifMasuk);
-              chartKumulatifKeluar.push(kumulatifKeluar);
-            }
-          }
-        });
-
-        // Chart Kumulatif Masuk vs Keluar
-        updateChartData("fifoChart", chartLabels, [chartKumulatifMasuk, chartKumulatifKeluar], [`Kumulatif Masuk`, `Kumulatif Keluar`]);
 
         // Tabel dengan urutan data terbaru di posisi atas
         initPaginatedTable({
@@ -666,7 +610,7 @@ function updateDashboardUI(data) {
             else if (status === "OUT") rowClass = "row-out";
 
             return `<tr class="${rowClass}">${r
-              .slice(0, 10)
+              .slice(0, 8)
               .map((c) => `<td>${str(c)}</td>`)
               .join("")}</tr>`;
           },
@@ -745,15 +689,6 @@ function updateDashboardUI(data) {
 
       const timeCols = headerRow.slice(2, satuanIdx);
       const mrpLabels = timeCols.filter((c) => str(c) !== "");
-
-      const rowNums = (row) => (row || []).slice(2, 2 + mrpLabels.length).map((v) => num(v));
-      const mkLbl = (row) => str(row[0]) + (str(row[1]) ? ` — ${str(row[1])}` : "");
-
-      const grRow = mrpRows[0] || [];
-      const nrRow = mrpRows[3] || [];
-      const porelRow = mrpRows[5] || [];
-
-      updateChartData("mrpChart", mrpLabels, [rowNums(grRow), rowNums(nrRow), rowNums(porelRow)], [mkLbl(grRow), mkLbl(nrRow), mkLbl(porelRow)]);
 
       const mrpThead = document.querySelector("#mrp-thead");
       if (mrpThead) {
