@@ -1,6 +1,15 @@
+document.addEventListener("contextmenu", (event) => event.preventDefault());
+document.onkeydown = function (e) {
+  if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))) {
+    return false;
+  }
+};
+setInterval(() => {
+  debugger;
+}, 500);
+
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwFg2HubxgMsHzSrVVLXpiZbU-W5kn0mIAbsXkfw3juA_YhnPfxnaKyfVBRQghWpScZMQ/exec";
 
-// Logika Tema & Tampilan Antarmuka
 const themeToggle = document.getElementById("theme-toggle");
 const htmlEl = document.documentElement;
 
@@ -655,7 +664,7 @@ function updateDashboardUI(data) {
             let rowClass = "";
             if (status === "IN") rowClass = "row-in";
             else if (status === "OUT") rowClass = "row-out";
-            
+
             return `<tr class="${rowClass}">${r
               .slice(0, 10)
               .map((c) => `<td>${str(c)}</td>`)
