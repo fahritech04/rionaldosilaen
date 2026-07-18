@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz5kdEfoc8Guqj5IQUDlHvX49-ISxJ5CRqBhASn5YUA9n5A3H5qfaMZ5D_ZxTXckV6mew/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxBkc9UbqymJXpZBoDCszjOKXdomOdLlJjUH62heIBrn9KTjP7yXe7AB90Y-IEVt6kQlw/exec";
 
 // ==========================================
 // Tema & UI Logic
@@ -139,15 +139,6 @@ function hexToRgba(hex, alpha) {
 const chartDefinitions = [
   // --- DASHBOARD SECTION ---
   {
-    id: "sisaStokChart",
-    type: "bar",
-    data: {
-      labels: [],
-      datasets: [{ label: "Sisa Stok (kg)", data: [], colorKey: "accent", barThickness: 30, borderRadius: 6 }],
-    },
-    options: { indexAxis: "y", scales: { x: { max: 120 } } },
-  },
-  {
     id: "vpiChart",
     type: "pie",
     data: {
@@ -162,8 +153,8 @@ const chartDefinitions = [
     data: {
       labels: [],
       datasets: [
-        { label: "Tepat Waktu", data: [], colorKey: "accent" },
-        { label: "Total Pengiriman", data: [], colorKey: "primary" },
+        { label: "Jumlah Pengiriman", data: [], colorKey: "accent" },
+        { label: "Total Pengiriman Delay", data: [], colorKey: "primary" },
       ],
     },
     options: { scales: { y: { max: 2.5, ticks: { stepSize: 0.5 } } } },
@@ -174,8 +165,8 @@ const chartDefinitions = [
     data: {
       labels: [],
       datasets: [
-        { label: "Total Pesanan", data: [], colorKey: "accent" },
-        { label: "Retur", data: [], colorKey: "primary" },
+        { label: "Jumlah Pemesanan", data: [], colorKey: "accent" },
+        { label: "Jumlah Return", data: [], colorKey: "primary" },
       ],
     },
     options: { scales: { y: { max: 2.5, ticks: { stepSize: 0.5 } } } },
@@ -263,13 +254,9 @@ function initCharts() {
       animation: {
         duration: 800,
         easing: "easeOutQuart", // Non-bouncy to prevent cursor flicker
-        delay: (context) => {
-          let delay = 0;
-          if (context.type === "data" && context.mode === "default" && !context.active) {
-            delay = context.dataIndex * 150 + context.datasetIndex * 100;
-          }
-          return delay;
-        },
+      },
+      animations: {
+        x: { duration: 0 }, // Matikan animasi geser horizontal
       },
       plugins: {
         legend: { position: "bottom", labels: { usePointStyle: true, pointStyle: "rectRounded", boxWidth: 12, padding: 20, font: { family: "'Space Grotesk', sans-serif", size: 13 } } },
@@ -365,7 +352,9 @@ function updateChartData(chartId, newLabels, newDatasetsData, newDatasetLabels =
       }
     }
   });
-  chart.update();
+  
+  chart.reset(); // Reset posisi elemen ke 0 (bawah)
+  chart.update(); // Animasi ulang tumbuh ke atas
 }
 // ==========================================
 // START
@@ -572,23 +561,61 @@ function updateDashboardUI(data) {
       [data.vpi_scoring_data.map((r) => num(r[4]))],
     );
 
-    // Tabel VPI Scoring
-    initPaginatedTable({
-      id: "vpi-scoring",
-      data: data.vpi_scoring_data,
-      itemsPerPage: 5,
-      renderRow: (r) => `<tr><td>${str(r[0])}</td><td>${str(r[1])}</td><td>${str(r[2])}</td><td>${str(r[3])}</td><td>${str(r[4])}</td><td>${str(r[5])}</td></tr>`,
-    });
-  }
+    // Tabel Riwayat Vendor Gabungan
+    if (data.riwayat_raw_data && data.riwayat_raw_data.length > 0 && data.vpi_scoring_data) {
+      const scoreMap = {};
+      data.vpi_scoring_data.forEach((r) => {
+        scoreMap[str(r[0]).trim().toLowerCase()] = r.slice(1);
+      });
 
-  // Tabel VPI Raw
-  if (data.vpi_raw_data && data.vpi_raw_data.length > 0) {
-    initPaginatedTable({
-      id: "vpi-raw",
-      data: data.vpi_raw_data,
-      itemsPerPage: 5,
-      renderRow: (r) => `<tr><td>${str(r[0])}</td><td>${str(r[1])}</td><td>${str(r[2])}</td><td>${str(r[3])}</td><td>${str(r[4])}</td><td>${str(r[5])}</td></tr>`,
-    });
+      const mergedData = data.riwayat_raw_data.map((r) => {
+        const vendorName = str(r[0]).trim().toLowerCase();
+        const scoreData = scoreMap[vendorName] || ["-", "-", "-", "-", "-"];
+        return [...r, ...scoreData];
+      });
+
+      // Urutkan berdasarkan Ranking (index 10) secara ascending
+      // Jika ranking 0 atau tidak ada (misal '-'), pindahkan ke bawah
+      mergedData.sort((a, b) => {
+        let rankA = num(a[10]);
+        let rankB = num(b[10]);
+        if (rankA === 0) rankA = 999;
+        if (rankB === 0) rankB = 999;
+        return rankA - rankB;
+      });
+
+      initPaginatedTable({
+        id: "riwayat-vendor",
+        data: mergedData,
+        itemsPerPage: 5,
+        renderRow: (r) => `<tr>
+          <td>${str(r[0])}</td>
+          <td>${str(r[1])}</td>
+          <td>${str(r[2])}</td>
+          <td>${str(r[3])}</td>
+          <td>${str(r[4])}</td>
+          <td>${str(r[5])}</td>
+          <td>${str(r[6])}</td>
+          <td>${str(r[7])}</td>
+          <td>${str(r[8])}</td>
+          <td>${str(r[9])}</td>
+          <td>${str(r[10])}</td>
+        </tr>`,
+      });
+
+      // Update pesananChart dari DATA RIWAYAT VENDOR (Jumlah Pemesanan & Jumlah Return)
+      const riwayatLabels = data.riwayat_raw_data.map((r) => str(r[0]));
+      updateChartData("pesananChart", riwayatLabels, [
+        data.riwayat_raw_data.map((r) => num(r[1])), // Jumlah Pemesanan
+        data.riwayat_raw_data.map((r) => num(r[2])), // Jumlah Return
+      ]);
+
+      // Update performaChart dari DATA RIWAYAT VENDOR (Jumlah Pengiriman & Total Pengiriman Delay)
+      updateChartData("performaChart", riwayatLabels, [
+        data.riwayat_raw_data.map((r) => num(r[3])), // Jumlah Pengiriman
+        data.riwayat_raw_data.map((r) => num(r[4]))  // Total Pengiriman Delay
+      ]);
+    }
   }
 
   // ================================================================
@@ -613,45 +640,131 @@ function updateDashboardUI(data) {
     if (stockThead && stockTbody && stockRows.length > 0) {
       stockThead.innerHTML = stockRows.map((r) => `<th>${str(r[0])}</th>`).join("");
       stockTbody.innerHTML = stockRows.map((r) => `<td>${str(r[3])}</td>`).join("");
-      updateChartData(
-        "sisaStokChart",
-        stockRows.map((r) => str(r[0])),
-        [stockRows.map((r) => num(r[3]))],
-      );
     }
 
     // Tabel FIFO Detail & Grafik Kapasitas
-    if (data.fifo_detail_data && data.fifo_detail_data.length > 1) {
-      const fifoDetailHeader = data.fifo_detail_data[0]; // B5:I5
-      const detailRows = data.fifo_detail_data.slice(1).filter((r) => str(r[0]) !== ""); // Filter baris kosong
-
-      // Update header tabel secara dinamis
-      const fifoThead = document.querySelector("#fifo-tbody").previousElementSibling;
-      if (fifoThead) {
-        fifoThead.innerHTML = `<tr>${fifoDetailHeader
-          .slice(0, 8)
-          .map((h) => `<th>${str(h)}</th>`)
-          .join("")}</tr>`;
+    if (data.fifo_detail_data && Object.keys(data.fifo_detail_data).length > 0) {
+      
+      // -----------------------------------------------------------
+      // Global FIFO Recommendation Logic (Semua Material)
+      // -----------------------------------------------------------
+      const recEl = document.getElementById("fifo-recommendation");
+      if (recEl) {
+        const materials = ["K-1-PUTIH", "K-1-HITAM", "K-1-ABU-ABU"];
+        let rowsHTML = "";
+        
+        materials.forEach(matName => {
+           const matData = data.fifo_detail_data[matName] || [];
+           let recommendedBatch = "-";
+           let recommendedSisa = "0";
+           
+           if (matData.length >= 2) {
+              const detailRows = matData.slice(1);
+              for (let i = 0; i < detailRows.length; i++) {
+                 const r = detailRows[i];
+                 const sisa = num(r[0]);
+                 const type = str(r[2]).toUpperCase();
+                 if (type === "IN" && sisa > 0) {
+                    recommendedBatch = str(r[1]); // Tanggal Batch
+                    recommendedSisa = str(r[0]); // Sisa Stok
+                    break; 
+                 }
+              }
+           }
+           
+           rowsHTML += `
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 8px; padding-top: 8px;">
+              <span style="font-size: 0.95rem; font-weight: 500; color: var(--text); width: 33%;">${matName}</span>
+              <div style="width: 33%; display: flex; justify-content: center;">
+                <span style="font-size: 0.8rem; background: var(--accent); color: var(--bg); padding: 2px 8px; border-radius: 12px; font-weight: 700;">${recommendedBatch}</span>
+              </div>
+              <span style="font-size: 0.95rem; font-weight: 700; color: var(--accent); width: 33%; text-align: right;">${recommendedSisa}</span>
+            </div>
+           `;
+        });
+        
+        recEl.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--line); padding-bottom: 6px; margin-bottom: 4px;">
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.5px; width: 33%;">Kode Material</span>
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.5px; width: 33%; text-align: center;">Diambil dari Batch</span>
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.5px; width: 33%; text-align: right;">Sisa Stok Batch (kg)</span>
+          </div>
+          ${rowsHTML}
+        `;
       }
 
-      // Chart FIFO (Grafik Kapasitas Gudang): X = Tanggal (r[0]), Y1 = Total Gudang (r[6]), Y2 = Margin Kapasitas (r[7])
-      updateChartData(
-        "fifoChart",
-        detailRows.map((r) => str(r[0])), // Tanggal
-        [detailRows.map((r) => num(r[6])), detailRows.map((r) => num(r[7]))],
-        [`${str(fifoDetailHeader[6])}`, `${str(fifoDetailHeader[7])}`], // Override label dataset agar mengikuti spreadsheet
-      );
+      // -----------------------------------------------------------
+      // Render FIFO Table & Chart by Selected Material
+      // -----------------------------------------------------------
+      const fifoSelect = document.getElementById("fifo-material-select");
+      
+      const renderFifoMaterial = (materialName) => {
+        const matData = data.fifo_detail_data[materialName] || [];
+        if (matData.length < 2) {
+          document.querySelector("#fifo-tbody").innerHTML = "<tr><td colspan='10' style='text-align: center; padding: 16px;'>Data Kosong</td></tr>";
+          const paginationEl = document.getElementById("fifo-pagination");
+          if (paginationEl) paginationEl.innerHTML = "";
+          updateChartData("fifoChart", [], [[], []], ["Total Gudang", "Margin Kapasitas"]);
+          return;
+        }
 
-      initPaginatedTable({
-        id: "fifo",
-        data: detailRows,
-        itemsPerPage: 5,
-        renderRow: (r) =>
-          `<tr>${r
-            .slice(0, 8)
-            .map((c) => `<td>${str(c)}</td>`)
-            .join("")}</tr>`,
-      });
+        const detailRows = matData.slice(1);
+        
+        // Perhitungan Running Total Kapasitas 500kg
+        const chartLabels = [];
+        const chartKumulatifMasuk = [];
+        const chartKumulatifKeluar = [];
+
+        detailRows.forEach((r) => {
+          const tanggal = str(r[1]); // TANGGAL ada di index 1
+          const kumulatifMasuk = num(r[8]); // Kumulatif Masuk index 8
+          const kumulatifKeluar = num(r[9]); // Kumulatif Keluar index 9
+          const masuk = num(r[5]);
+          const keluar = num(r[6]);
+          
+          if (masuk > 0 || keluar > 0) {
+             if (chartLabels.length > 0 && chartLabels[chartLabels.length - 1] === tanggal) {
+                chartKumulatifMasuk[chartKumulatifMasuk.length - 1] = kumulatifMasuk;
+                chartKumulatifKeluar[chartKumulatifKeluar.length - 1] = kumulatifKeluar;
+             } else {
+                chartLabels.push(tanggal);
+                chartKumulatifMasuk.push(kumulatifMasuk);
+                chartKumulatifKeluar.push(kumulatifKeluar);
+             }
+          }
+        });
+
+        // Chart Kumulatif Masuk vs Keluar
+        updateChartData(
+          "fifoChart",
+          chartLabels, 
+          [chartKumulatifMasuk, chartKumulatifKeluar],
+          [`Kumulatif Masuk`, `Kumulatif Keluar`], 
+        );
+
+        // Tabel Data 10 Kolom (Dibalik agar terbaru di atas)
+        initPaginatedTable({
+          id: "fifo",
+          data: [...detailRows].reverse(),
+          itemsPerPage: 10,
+          renderRow: (r) =>
+            `<tr>${r
+              .slice(0, 10)
+              .map((c) => `<td>${str(c)}</td>`)
+              .join("")}</tr>`,
+        });
+      };
+
+      if (fifoSelect) {
+        // Hapus event listener lama agar tidak dobel saat auto-sync
+        const newSelect = fifoSelect.cloneNode(true);
+        fifoSelect.parentNode.replaceChild(newSelect, fifoSelect);
+        
+        renderFifoMaterial(newSelect.value); // Render default
+        newSelect.addEventListener("change", (e) => {
+          renderFifoMaterial(e.target.value);
+        });
+      }
     }
   }
 
@@ -666,49 +779,7 @@ function updateDashboardUI(data) {
 
     const labels = defectRows.map((r) => str(r[0]));
 
-    // Performa Chart: Total Kirim (index 10) vs Tepat Waktu (index 12)
-    updateChartData("performaChart", labels, [defectRows.map((r) => num(r[12])), defectRows.map((r) => num(r[10]))]);
-
-    // Pesanan Chart: Total Pesanan (index 2) vs Return (index 6)
-    updateChartData("pesananChart", labels, [defectRows.map((r) => num(r[2])), defectRows.map((r) => num(r[6]))]);
-
-    // --- Pemesanan & Cacat (Kolom 0 sampai 6) ---
-    const pemesananThead = document.querySelector("#defect-pemesanan-tbody").previousElementSibling;
-    if (pemesananThead) {
-      pemesananThead.innerHTML = `<tr>${defectHeader
-        .slice(0, 7)
-        .map((h) => `<th>${str(h)}</th>`)
-        .join("")}</tr>`;
-    }
-    initPaginatedTable({
-      id: "defect-pemesanan",
-      data: defectRows,
-      itemsPerPage: 5,
-      renderRow: (r) =>
-        `<tr>${r
-          .slice(0, 7)
-          .map((c) => `<td>${str(c)}</td>`)
-          .join("")}</tr>`,
-    });
-
-    // --- Pengiriman (Kolom 9 sampai 12) ---
-    const pengirimanThead = document.querySelector("#defect-pengiriman-tbody").previousElementSibling;
-    if (pengirimanThead) {
-      pengirimanThead.innerHTML = `<tr>${defectHeader
-        .slice(9, 13)
-        .map((h) => `<th>${str(h)}</th>`)
-        .join("")}</tr>`;
-    }
-    initPaginatedTable({
-      id: "defect-pengiriman",
-      data: defectRows,
-      itemsPerPage: 5,
-      renderRow: (r) =>
-        `<tr>${r
-          .slice(9, 13)
-          .map((c) => `<td>${str(c)}</td>`)
-          .join("")}</tr>`,
-    });
+    // (Data performaChart sudah dipindah ke blok riwayat_vendor_data)
   }
 
   // ================================================================
@@ -727,7 +798,7 @@ function updateDashboardUI(data) {
     initPaginatedTable({
       id: "qc",
       data: validQC,
-      itemsPerPage: 5,
+      itemsPerPage: 10,
       renderRow: (r) => {
         const badge = (v, okVal) => {
           const val = str(v);
@@ -735,7 +806,6 @@ function updateDashboardUI(data) {
           return `<td class="${val.toLowerCase() === okVal ? "badge-lolos" : "badge-return"}">${val}</td>`;
         };
         return `<tr>
-          <td>${str(r[0])}</td>
           <td>${str(r[1])}</td>
           <td>${str(r[2])}</td>
           <td>${str(r[3])}</td>
@@ -746,15 +816,9 @@ function updateDashboardUI(data) {
           <td>${str(r[8])}</td>
           <td>${str(r[9])}</td>
           <td>${str(r[10])}</td>
-          ${badge(r[11], "lolos")}
-          <td>${str(r[12])}</td>
-          <td>${str(r[13])}</td>
-          <td>${str(r[14])}</td>
-          ${badge(r[15], "lolos")}
-          <td>${str(r[16])}</td>
-          <td>${str(r[17])}</td>
-          ${badge(r[18], "tepat waktu")}
-          <td>${str(r[19])}</td>
+          <td>${str(r[11])}</td>
+          ${badge(r[12], "lolos")}
+          ${badge(r[13], "lolos")}
         </tr>`;
       },
     });

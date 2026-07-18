@@ -64,10 +64,17 @@
         <div class="summary-section">
           <article class="card summary-card reveal">
             <p class="eyebrow">Vendor Terbaik</p>
-            <div class="vendor-best">Vendor B</div>
+            <div class="vendor-best" id="best-vendor">Vendor B</div>
           </article>
 
           <article class="card summary-card reveal">
+            <p class="eyebrow">Rekomendasi FIFO</p>
+            <div class="fifo-recommendation" id="fifo-recommendation" style="font-size: 1.2rem; font-weight: 600; color: var(--accent); display: flex; flex-direction: column; gap: 4px">
+              <span style="font-size: 0.9rem; color: var(--text-secondary)">Mencari data...</span>
+            </div>
+          </article>
+
+          <article class="card summary-card reveal" style="grid-column: 1 / -1">
             <p class="eyebrow">Sisa Stok Gudang</p>
             <div class="table-responsive">
               <table class="stock-table">
@@ -89,13 +96,6 @@
         <!-- Main Charts -->
         <div class="charts-section">
           <article class="card chart-card reveal">
-            <p class="eyebrow">Sisa Stok di Gudang</p>
-            <div class="chart-container">
-              <canvas id="sisaStokChart"></canvas>
-            </div>
-          </article>
-
-          <article class="card chart-card reveal">
             <p class="eyebrow">Skor VPI per Vendor</p>
             <div class="chart-container pie-container">
               <canvas id="vpiChart"></canvas>
@@ -109,7 +109,7 @@
             </div>
           </article>
 
-          <article class="card chart-card reveal">
+          <article class="card chart-card reveal" style="grid-column: 1 / -1">
             <p class="eyebrow">Jumlah Pesanan/return per Vendor</p>
             <div class="chart-container">
               <canvas id="pesananChart"></canvas>
@@ -119,35 +119,18 @@
 
         <!-- VPI Detail Tables -->
         <div class="charts-section">
-          <article class="card reveal">
-            <p class="eyebrow">Data Setiap Vendor</p>
+          <article class="card reveal" style="grid-column: 1 / -1">
+            <p class="eyebrow">Data Riwayat Vendor</p>
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
                   <tr>
                     <th>Vendor</th>
-                    <th>Qty Diterima (kg)</th>
-                    <th>Qty Defect (kg)</th>
-                    <th>Total Pengiriman</th>
-                    <th>Tepat Waktu</th>
-                    <th>Harga (Rp/kg)</th>
-                  </tr>
-                </thead>
-                <tbody id="vpi-raw-tbody">
-                  <!-- Dynamic Data -->
-                </tbody>
-              </table>
-            </div>
-            <div id="vpi-raw-pagination" class="pagination"></div>
-          </article>
-
-          <article class="card reveal">
-            <p class="eyebrow">Skoring VPI per Vendor</p>
-            <div class="table-responsive">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Vendor</th>
+                    <th>Jumlah Pemesanan</th>
+                    <th>Jumlah Return</th>
+                    <th>Jumlah Pengiriman</th>
+                    <th>Total Pengiriman Delay</th>
+                    <th>Harga (Rp/Kg)</th>
                     <th>Quality</th>
                     <th>Delivery</th>
                     <th>Price</th>
@@ -155,12 +138,12 @@
                     <th>Ranking</th>
                   </tr>
                 </thead>
-                <tbody id="vpi-scoring-tbody">
+                <tbody id="riwayat-vendor-tbody">
                   <!-- Dynamic Data -->
                 </tbody>
               </table>
             </div>
-            <div id="vpi-scoring-pagination" class="pagination"></div>
+            <div id="riwayat-vendor-pagination" class="pagination"></div>
           </article>
         </div>
       </section>
@@ -171,7 +154,7 @@
       <section id="qc" class="dashboard-section">
         <div class="section-heading reveal">
           <p class="eyebrow">Quality Control</p>
-          <h2 class="section-title">Implementasi QC — SNI AQL 2,5%</h2>
+          <h2 class="section-title">Implementasi AQL 2,5%</h2>
         </div>
 
         <div class="charts-section single-col">
@@ -181,26 +164,19 @@
               <table class="data-table">
                 <thead>
                   <tr>
-                    <th style="min-width: 50px">No.</th>
                     <th style="min-width: 120px">Tanggal Masuk</th>
                     <th style="min-width: 120px">Kode Material</th>
                     <th style="min-width: 100px">Vendor</th>
-                    <th style="min-width: 150px">Deskripsi Defect</th>
+                    <th style="min-width: 120px">Jumlah Barang Masuk (bal)</th>
                     <th style="min-width: 100px">Ukuran Sampel (n)</th>
                     <th style="min-width: 100px">Kode Sampel</th>
                     <th style="min-width: 80px">Ac &le;</th>
                     <th style="min-width: 80px">Re &ge;</th>
                     <th style="min-width: 100px">Cacat Ditemukan</th>
+                    <th style="min-width: 150px">Deskripsi Defect</th>
                     <th style="min-width: 100px">Foto Bukti?</th>
                     <th style="min-width: 120px">Hasil AQL 2.5</th>
-                    <th style="min-width: 180px">Keputusan (LOLOS/RETUR/HOLD)</th>
-                    <th style="min-width: 150px">Validasi Supervisor</th>
-                    <th style="min-width: 150px">Koordinasi Vendor</th>
-                    <th style="min-width: 120px">Hasil Akhir</th>
-                    <th style="min-width: 150px">Jadwal Pengiriman PO</th>
-                    <th style="min-width: 150px">Tanggal Barang Sampai</th>
-                    <th style="min-width: 150px">Status Pengiriman</th>
-                    <th style="min-width: 150px">Keterangan</th>
+                    <th style="min-width: 180px">Keputusan (LOLOS/RETURN/HOLD)</th>
                   </tr>
                 </thead>
                 <tbody id="qc-tbody">
@@ -211,51 +187,6 @@
             <div id="qc-pagination" class="pagination"></div>
           </article>
         </div>
-
-        <!-- Administrasi Vendor Summary -->
-        <div class="charts-section">
-          <article class="card reveal">
-            <p class="eyebrow">Administrasi Vendor — Pemesanan & Cacat</p>
-            <div class="table-responsive">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Vendor</th>
-                    <th>Material</th>
-                    <th>Total Pesanan</th>
-                    <th>Sampel (n)</th>
-                    <th>Cacat</th>
-                    <th>Lolos</th>
-                    <th>Return</th>
-                  </tr>
-                </thead>
-                <tbody id="defect-pemesanan-tbody">
-                  <!-- Dynamic Data -->
-                </tbody>
-              </table>
-            </div>
-            <div id="defect-pemesanan-pagination" class="pagination"></div>
-          </article>
-
-          <article class="card reveal">
-            <p class="eyebrow">Administrasi Vendor — Pengiriman</p>
-            <div class="table-responsive">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Vendor</th>
-                    <th>Total Pengiriman</th>
-                    <th>Total Delay</th>
-                  </tr>
-                </thead>
-                <tbody id="defect-pengiriman-tbody">
-                  <!-- Dynamic Data -->
-                </tbody>
-              </table>
-            </div>
-            <div id="defect-pengiriman-pagination" class="pagination"></div>
-          </article>
-        </div>
       </section>
 
       <!-- ============================================ -->
@@ -264,24 +195,33 @@
       <section id="fifo" class="dashboard-section">
         <div class="section-heading reveal">
           <p class="eyebrow">First In First Out</p>
-          <h2 class="section-title">Penyimpanan FIFO — Kapasitas 500 kg</h2>
+          <h2 class="section-title">Penyimpanan FIFO</h2>
         </div>
 
         <div class="charts-section single-col">
           <article class="card reveal">
-            <p class="eyebrow">Log Pergerakan Stok Gudang</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px">
+              <p class="eyebrow" style="margin-bottom: 0">Log Pergerakan Stok Gudang</p>
+              <select id="fifo-material-select" class="form-select" style="max-width: 200px; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background-color: var(--card-bg); color: var(--text)">
+                <option value="K-1-PUTIH">K-1-PUTIH</option>
+                <option value="K-1-ABU-ABU">K-1-ABU-ABU</option>
+                <option value="K-1-HITAM">K-1-HITAM</option>
+              </select>
+            </div>
             <div class="table-responsive">
               <table class="data-table">
                 <thead>
                   <tr>
+                    <th>Sisa Stok (kg)</th>
                     <th>Tanggal</th>
-                    <th>Jenis</th>
-                    <th>Material</th>
+                    <th>Barang (IN/OUT)</th>
+                    <th>Kode Material</th>
                     <th>Vendor</th>
                     <th>Masuk (kg)</th>
                     <th>Keluar (kg)</th>
-                    <th>Total Gudang (kg)</th>
-                    <th>Margin (kg)</th>
+                    <th>Ambil Barang di Tgl</th>
+                    <th>Kumulatif Masuk (kg)</th>
+                    <th>Kumulatif Keluar (kg)</th>
                   </tr>
                 </thead>
                 <tbody id="fifo-tbody">
@@ -289,12 +229,13 @@
                 </tbody>
               </table>
             </div>
+            <div id="fifo-pagination" class="pagination"></div>
           </article>
         </div>
 
         <div class="charts-section single-col">
           <article class="card chart-card reveal">
-            <p class="eyebrow">Grafik Kapasitas Gudang</p>
+            <p class="eyebrow">Grafik Kumulatif Masuk vs Keluar</p>
             <div class="chart-container">
               <canvas id="fifoChart"></canvas>
             </div>
@@ -337,7 +278,6 @@
           </article>
         </div>
       </section>
-
     </main>
     <!-- Footer -->
     <footer class="site-footer">
