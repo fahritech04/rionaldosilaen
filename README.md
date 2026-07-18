@@ -1,4 +1,4 @@
-# Visualisasi Dashboard - Tugas Akhir / Skripsi
+# Visualisasi Data Pengadaan
 
 Proyek ini merupakan dashboard interaktif berbasis web yang dikembangkan sebagai bagian dari Tugas Akhir / Skripsi oleh:
 
