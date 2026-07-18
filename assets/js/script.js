@@ -352,7 +352,7 @@ function updateChartData(chartId, newLabels, newDatasetsData, newDatasetLabels =
       }
     }
   });
-  
+
   chart.reset(); // Reset posisi elemen ke 0 (bawah)
   chart.update(); // Animasi ulang tumbuh ke atas
 }
@@ -613,7 +613,7 @@ function updateDashboardUI(data) {
       // Update performaChart dari DATA RIWAYAT VENDOR (Jumlah Pengiriman & Total Pengiriman Delay)
       updateChartData("performaChart", riwayatLabels, [
         data.riwayat_raw_data.map((r) => num(r[3])), // Jumlah Pengiriman
-        data.riwayat_raw_data.map((r) => num(r[4]))  // Total Pengiriman Delay
+        data.riwayat_raw_data.map((r) => num(r[4])), // Total Pengiriman Delay
       ]);
     }
   }
@@ -644,7 +644,6 @@ function updateDashboardUI(data) {
 
     // Tabel FIFO Detail & Grafik Kapasitas
     if (data.fifo_detail_data && Object.keys(data.fifo_detail_data).length > 0) {
-      
       // -----------------------------------------------------------
       // Global FIFO Recommendation Logic (Semua Material)
       // -----------------------------------------------------------
@@ -652,27 +651,27 @@ function updateDashboardUI(data) {
       if (recEl) {
         const materials = ["K-1-PUTIH", "K-1-HITAM", "K-1-ABU-ABU"];
         let rowsHTML = "";
-        
-        materials.forEach(matName => {
-           const matData = data.fifo_detail_data[matName] || [];
-           let recommendedBatch = "-";
-           let recommendedSisa = "0";
-           
-           if (matData.length >= 2) {
-              const detailRows = matData.slice(1);
-              for (let i = 0; i < detailRows.length; i++) {
-                 const r = detailRows[i];
-                 const sisa = num(r[0]);
-                 const type = str(r[2]).toUpperCase();
-                 if (type === "IN" && sisa > 0) {
-                    recommendedBatch = str(r[1]); // Tanggal Batch
-                    recommendedSisa = str(r[0]); // Sisa Stok
-                    break; 
-                 }
+
+        materials.forEach((matName) => {
+          const matData = data.fifo_detail_data[matName] || [];
+          let recommendedBatch = "-";
+          let recommendedSisa = "0";
+
+          if (matData.length >= 2) {
+            const detailRows = matData.slice(1);
+            for (let i = 0; i < detailRows.length; i++) {
+              const r = detailRows[i];
+              const sisa = num(r[0]);
+              const type = str(r[2]).toUpperCase();
+              if (type === "IN" && sisa > 0) {
+                recommendedBatch = str(r[1]); // Tanggal Batch
+                recommendedSisa = str(r[0]); // Sisa Stok
+                break;
               }
-           }
-           
-           rowsHTML += `
+            }
+          }
+
+          rowsHTML += `
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 8px; padding-top: 8px;">
               <span style="font-size: 0.95rem; font-weight: 500; color: var(--text); width: 33%;">${matName}</span>
               <div style="width: 33%; display: flex; justify-content: center;">
@@ -682,11 +681,11 @@ function updateDashboardUI(data) {
             </div>
            `;
         });
-        
+
         recEl.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--line); padding-bottom: 6px; margin-bottom: 4px;">
             <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.5px; width: 33%;">Kode Material</span>
-            <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.5px; width: 33%; text-align: center;">Diambil dari Batch</span>
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.5px; width: 33%; text-align: center;">Ambil Barang di Tgl</span>
             <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.5px; width: 33%; text-align: right;">Sisa Stok Batch (kg)</span>
           </div>
           ${rowsHTML}
@@ -697,7 +696,7 @@ function updateDashboardUI(data) {
       // Render FIFO Table & Chart by Selected Material
       // -----------------------------------------------------------
       const fifoSelect = document.getElementById("fifo-material-select");
-      
+
       const renderFifoMaterial = (materialName) => {
         const matData = data.fifo_detail_data[materialName] || [];
         if (matData.length < 2) {
@@ -709,7 +708,7 @@ function updateDashboardUI(data) {
         }
 
         const detailRows = matData.slice(1);
-        
+
         // Perhitungan Running Total Kapasitas 500kg
         const chartLabels = [];
         const chartKumulatifMasuk = [];
@@ -721,26 +720,21 @@ function updateDashboardUI(data) {
           const kumulatifKeluar = num(r[9]); // Kumulatif Keluar index 9
           const masuk = num(r[5]);
           const keluar = num(r[6]);
-          
+
           if (masuk > 0 || keluar > 0) {
-             if (chartLabels.length > 0 && chartLabels[chartLabels.length - 1] === tanggal) {
-                chartKumulatifMasuk[chartKumulatifMasuk.length - 1] = kumulatifMasuk;
-                chartKumulatifKeluar[chartKumulatifKeluar.length - 1] = kumulatifKeluar;
-             } else {
-                chartLabels.push(tanggal);
-                chartKumulatifMasuk.push(kumulatifMasuk);
-                chartKumulatifKeluar.push(kumulatifKeluar);
-             }
+            if (chartLabels.length > 0 && chartLabels[chartLabels.length - 1] === tanggal) {
+              chartKumulatifMasuk[chartKumulatifMasuk.length - 1] = kumulatifMasuk;
+              chartKumulatifKeluar[chartKumulatifKeluar.length - 1] = kumulatifKeluar;
+            } else {
+              chartLabels.push(tanggal);
+              chartKumulatifMasuk.push(kumulatifMasuk);
+              chartKumulatifKeluar.push(kumulatifKeluar);
+            }
           }
         });
 
         // Chart Kumulatif Masuk vs Keluar
-        updateChartData(
-          "fifoChart",
-          chartLabels, 
-          [chartKumulatifMasuk, chartKumulatifKeluar],
-          [`Kumulatif Masuk`, `Kumulatif Keluar`], 
-        );
+        updateChartData("fifoChart", chartLabels, [chartKumulatifMasuk, chartKumulatifKeluar], [`Kumulatif Masuk`, `Kumulatif Keluar`]);
 
         // Tabel Data 10 Kolom (Dibalik agar terbaru di atas)
         initPaginatedTable({
@@ -759,7 +753,7 @@ function updateDashboardUI(data) {
         // Hapus event listener lama agar tidak dobel saat auto-sync
         const newSelect = fifoSelect.cloneNode(true);
         fifoSelect.parentNode.replaceChild(newSelect, fifoSelect);
-        
+
         renderFifoMaterial(newSelect.value); // Render default
         newSelect.addEventListener("change", (e) => {
           renderFifoMaterial(e.target.value);
