@@ -82,26 +82,7 @@ function doGet(e) {
       var txAbu = [];
       var txHitam = [];
       
-      for (var i = 4; i < fifoRaw.length; i++) {
-        var row = fifoRaw[i];
-        
-        // Ambil Data Material K-1-PUTIH
-        if (row[2] && String(row[2]).trim() !== "") { // Verifikasi keberadaan Tanggal
-          txPutih.push([row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10]]);
-        }
-        
-        // Ambil Data Material K-1-ABU-ABU
-        if (row.length > 13 && row[13] && String(row[13]).trim() !== "") {
-          txAbu.push([row[12], row[13], row[14], row[15], row[16], row[17], row[18], row[19], row[20], row[21]]);
-        }
-        
-        // Ambil Data Material K-1-HITAM
-        if (row.length > 24 && row[24] && String(row[24]).trim() !== "") {
-          txHitam.push([row[23], row[24], row[25], row[26], row[27], row[28], row[29], row[30], row[31], row[32]]);
-        }
-      }
-      
-      // Urutkan data berdasarkan Tanggal (Kronologis)
+      // Fungsi untuk mengkonversi tanggal teks ke timestamp
       function parseIndoDate(dStr) {
         if (!dStr) return 0;
         dStr = String(dStr).toLowerCase().trim();
@@ -116,17 +97,43 @@ function doGet(e) {
         return 0;
       }
       
-      function sortByDate(a, b) {
-        return parseIndoDate(a[1]) - parseIndoDate(b[1]); // Indeks kolom Tanggal
+      for (var i = 4; i < fifoRaw.length; i++) {
+        var row = fifoRaw[i];
+        
+        // Ambil Data Material K-1-PUTIH
+        if (row[2] && String(row[2]).trim() !== "") {
+          txPutih.push([row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], parseIndoDate(row[2])]);
+        }
+        
+        // Ambil Data Material K-1-ABU-ABU
+        if (row.length > 13 && row[13] && String(row[13]).trim() !== "") {
+          txAbu.push([row[12], row[13], row[14], row[15], row[16], row[17], row[18], row[19], row[20], row[21], parseIndoDate(row[13])]);
+        }
+        
+        // Ambil Data Material K-1-HITAM
+        if (row.length > 24 && row[24] && String(row[24]).trim() !== "") {
+          txHitam.push([row[23], row[24], row[25], row[26], row[27], row[28], row[29], row[30], row[31], row[32], parseIndoDate(row[24])]);
+        }
       }
       
-      txPutih.sort(sortByDate);
-      txAbu.sort(sortByDate);
-      txHitam.sort(sortByDate);
+      // Pengurutan O(N log N) murni dengan membandingkan indeks [10] (timestamp) yang sudah dikalkulasi
+      function sortByTimestamp(a, b) {
+        return a[10] - b[10];
+      }
       
-      detailData["K-1-PUTIH"] = detailData["K-1-PUTIH"].concat(txPutih);
-      detailData["K-1-ABU-ABU"] = detailData["K-1-ABU-ABU"].concat(txAbu);
-      detailData["K-1-HITAM"] = detailData["K-1-HITAM"].concat(txHitam);
+      txPutih.sort(sortByTimestamp);
+      txAbu.sort(sortByTimestamp);
+      txHitam.sort(sortByTimestamp);
+      
+      // Hapus kembali kolom timestamp agar tidak merusak struktur tabel (opsional, tapi lebih bersih)
+      function removeTimestamp(row) {
+        row.pop(); 
+        return row;
+      }
+      
+      detailData["K-1-PUTIH"] = detailData["K-1-PUTIH"].concat(txPutih.map(removeTimestamp));
+      detailData["K-1-ABU-ABU"] = detailData["K-1-ABU-ABU"].concat(txAbu.map(removeTimestamp));
+      detailData["K-1-HITAM"] = detailData["K-1-HITAM"].concat(txHitam.map(removeTimestamp));
     }
     
     data.fifo_detail_data = detailData;
