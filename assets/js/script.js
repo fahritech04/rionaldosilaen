@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxBkc9UbqymJXpZBoDCszjOKXdomOdLlJjUH62heIBrn9KTjP7yXe7AB90Y-IEVt6kQlw/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwFg2HubxgMsHzSrVVLXpiZbU-W5kn0mIAbsXkfw3juA_YhnPfxnaKyfVBRQghWpScZMQ/exec";
 
 // Logika Tema & Tampilan Antarmuka
 const themeToggle = document.getElementById("theme-toggle");
@@ -349,15 +349,6 @@ function showToast(message, type = "success", autoClose = true) {
     document.body.appendChild(container);
   }
 
-  // Hapus loading toast yang ada (jika ada)
-  if (type !== "loading") {
-    const existingLoadings = container.querySelectorAll(".toast.loading");
-    existingLoadings.forEach((el) => {
-      el.classList.remove("show");
-      setTimeout(() => el.remove(), 400);
-    });
-  }
-
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
 
@@ -368,8 +359,6 @@ function showToast(message, type = "success", autoClose = true) {
   } else if (type === "error") {
     icon =
       '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
-  } else if (type === "loading") {
-    icon = '<svg class="toast-spinner" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>';
   }
 
   toast.innerHTML = `${icon} <span style="font-weight:500;">${message}</span>`;
@@ -680,14 +669,6 @@ function updateDashboardUI(data) {
         });
       }
     }
-  }
-
-  // 3. Data Grafik Performa & Pesanan (Defect)
-  if (data.defect_data && data.defect_data.length > 1) {
-    const defectHeader = data.defect_data[0]; // B6:N6
-    const defectRows = data.defect_data.slice(1); // Baris data vendor
-
-    const labels = defectRows.map((r) => str(r[0]));
   }
 
   // Data Riwayat Inspeksi Quality Control (QC)

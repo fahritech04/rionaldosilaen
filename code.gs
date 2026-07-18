@@ -1,7 +1,5 @@
-const SHEET_VPI = "IMPLEMENTASI VPI";
 const SHEET_QC = "IMPLEMENTASI AQL";
 const SHEET_FIFO = "IMPLEMENTASI FIFO";
-const SHEET_DEFECT = "ADMINISTRASI VENDOR";
 const SHEET_MRP = "IMPLEMENTASI MRP";
 const SHEET_RIWAYAT = "DATA RIWAYAT VENDOR";
 
@@ -12,10 +10,8 @@ function doGet(e) {
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
 
-    var vpiSheet = ss.getSheetByName(SHEET_VPI);
     var qcSheet = ss.getSheetByName(SHEET_QC);
     var fifoSheet = ss.getSheetByName(SHEET_FIFO);
-    var defectSheet = ss.getSheetByName(SHEET_DEFECT);
     var mrpSheet = ss.getSheetByName(SHEET_MRP);
     var riwayatSheet = ss.getSheetByName(SHEET_RIWAYAT);
 
@@ -135,8 +131,7 @@ function doGet(e) {
     
     data.fifo_detail_data = detailData;
 
-    // Defect — B6:N9 (header + 3 baris data)
-    data.defect_data = getRange(defectSheet, 6, 2, 4, 13);
+
 
     data.last_update = Utilities.formatDate(new Date(), "Asia/Jakarta", "dd MMMM yyyy HH:mm:ss");
 
