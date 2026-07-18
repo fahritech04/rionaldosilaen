@@ -650,11 +650,17 @@ function updateDashboardUI(data) {
           id: "fifo",
           data: [...detailRows].reverse(),
           itemsPerPage: 10,
-          renderRow: (r) =>
-            `<tr>${r
+          renderRow: (r) => {
+            const status = str(r[2]).toUpperCase();
+            let rowClass = "";
+            if (status === "IN") rowClass = "row-in";
+            else if (status === "OUT") rowClass = "row-out";
+            
+            return `<tr class="${rowClass}">${r
               .slice(0, 10)
               .map((c) => `<td>${str(c)}</td>`)
-              .join("")}</tr>`,
+              .join("")}</tr>`;
+          },
         });
       };
 

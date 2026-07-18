@@ -20,6 +20,8 @@
   --transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   --success: #16a34a;
   --danger: #dc2626;
+  --row-in-bg: rgba(22, 163, 74, 0.08);
+  --row-out-bg: rgba(220, 38, 38, 0.08);
 }
 
 [data-theme="dark"] {
@@ -39,6 +41,8 @@
   --texture-color: rgba(255, 255, 255, 0.02);
   --success: #4ade80;
   --danger: #f87171;
+  --row-in-bg: rgba(74, 222, 128, 0.08);
+  --row-out-bg: rgba(248, 113, 113, 0.08);
   color-scheme: dark;
 }
 
@@ -315,6 +319,9 @@ body::before {
 }
 .data-table td:first-child { font-weight: 600; text-align: left; }
 .data-table tbody tr:hover { background: var(--line); }
+
+.data-table tbody tr.row-in { background-color: var(--row-in-bg); }
+.data-table tbody tr.row-out { background-color: var(--row-out-bg); }
 
 /* Label Status Badges */
 .badge-lolos { color: var(--success) !important; font-weight: 700; }
