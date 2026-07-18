@@ -720,6 +720,12 @@ function updateDashboardUI(data) {
           <td>${str(r[11])}</td>
           ${badge(r[12], "lolos")}
           ${badge(r[13], "lolos")}
+          ${badge(r[14], "lolos")}
+          ${badge(r[15], "lolos")}
+          <td>${str(r[16])}</td>
+          <td>${str(r[17])}</td>
+          <td>${str(r[18])}</td>
+          <td>${str(r[19])}</td>
         </tr>`;
       },
     });

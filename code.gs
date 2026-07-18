@@ -37,8 +37,8 @@ function doGet(e) {
     // MRP — B6 sampai ujung (mencakup MPS header, Komponen header, GR, SR, PoH, NR, PORt, PORel)
     data.mrp_data = getRange(mrpSheet, 6, 2);
 
-    // QC — B5 sampai ujung (semua baris log inspeksi), 14 kolom (B sampai O)
-    data.qc_data = getRange(qcSheet, 5, 2, null, 14);
+    // QC — B5 sampai ujung (semua baris log inspeksi), 20 kolom (B sampai U)
+    data.qc_data = getRange(qcSheet, 5, 2, null, 20);
 
     // FIFO Judul & Kapasitas — D2
     var fifoTitleData = getRange(fifoSheet, 2, 4, 1, 1);
