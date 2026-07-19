@@ -317,11 +317,66 @@ body::before {
   font-size: clamp(0.8rem, 1.3vw, 0.92rem);
   color: var(--text);
 }
+
+.vendor-history-table {
+  --group-green: rgba(22, 163, 74, 0.12);
+  --group-orange: rgba(234, 179, 8, 0.16);
+  --group-blue: rgba(37, 99, 235, 0.12);
+}
+
+.vendor-history-table th,
+.vendor-history-table td {
+  border: 1px solid var(--line);
+}
+.vendor-history-table thead th {
+  border-bottom: 2px solid var(--line);
+}
+
+.vendor-history-table :is(th, td):nth-child(2),
+.vendor-history-table :is(th, td):nth-child(3) {
+  background: var(--group-green);
+}
+.vendor-history-table :is(th, td):nth-child(2) { border-right: none; }
+.vendor-history-table :is(th, td):nth-child(3) { border-left: none; }
+
+.vendor-history-table :is(th, td):nth-child(4),
+.vendor-history-table :is(th, td):nth-child(5) {
+  background: var(--group-orange);
+}
+.vendor-history-table :is(th, td):nth-child(4) { border-right: none; }
+.vendor-history-table :is(th, td):nth-child(5) { border-left: none; }
+
+.vendor-history-table :is(th, td):nth-child(6) {
+  background: var(--group-blue);
+}
+
 .data-table td:first-child { font-weight: 600; text-align: left; }
 .data-table tbody tr:hover { background: var(--line); }
 
 .data-table tbody tr.row-in { background-color: var(--row-in-bg); }
 .data-table tbody tr.row-out { background-color: var(--row-out-bg); }
+
+.vendor-history-table td .table-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.78rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.vendor-history-table td .badge-green-soft {
+  background: rgba(22, 163, 74, 0.14);
+  color: var(--success);
+}
+.vendor-history-table td .badge-orange-soft {
+  background: rgba(234, 179, 8, 0.2);
+  color: #b45309;
+}
+.vendor-history-table td .badge-blue-soft {
+  background: rgba(37, 99, 235, 0.14);
+  color: #1d4ed8;
+}
 
 /* Label Status Badges */
 .badge-lolos { color: var(--success) !important; font-weight: 700; }
