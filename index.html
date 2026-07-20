@@ -265,7 +265,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-      document.write('<script src="assets/js/script.js?v=' + new Date().getTime() + '"><\/script>');
+      var t = new Date().getTime();
+      document.write('<script src="assets/js/ui.js?v=' + t + '"><\/script>');
+      document.write('<script src="assets/js/pagination.js?v=' + t + '"><\/script>');
+      document.write('<script src="assets/js/charts.js?v=' + t + '"><\/script>');
+      document.write('<script src="assets/js/api.js?v=' + t + '"><\/script>');
+      document.write('<script src="assets/js/main.js?v=' + t + '"><\/script>');
     </script>
   </body>
 </html>
