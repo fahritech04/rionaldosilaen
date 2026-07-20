@@ -54,12 +54,16 @@ const chartDefinitions = [
   // --- Bagian Dashboard ---
   {
     id: "vpiChart",
-    type: "pie",
+    type: "bar",
     data: {
       labels: [],
-      datasets: [{ data: [], colorKey: ["primary", "accent", "gray"], isPie: true }],
+      datasets: [{ label: "Skor VPI", data: [], colorKey: ["primary", "accent", "gray"] }],
     },
-    options: { layout: { padding: 20 } },
+    options: {
+      indexAxis: "y",
+      layout: { padding: 20 },
+      plugins: { legend: { display: false } },
+    },
   },
   {
     id: "performaChart",
@@ -88,7 +92,7 @@ const chartDefinitions = [
 ];
 
 // Inisialisasi Seluruh Grafik
-window.initCharts = function() {
+window.initCharts = function () {
   const htmlEl = document.documentElement;
   const currentTheme = htmlEl.getAttribute("data-theme");
   const colors = getColors(currentTheme);
@@ -173,7 +177,7 @@ window.initCharts = function() {
 };
 
 // Fungsi Pembaruan Tema
-window.updateChartsTheme = function(theme) {
+window.updateChartsTheme = function (theme) {
   const colors = getColors(theme);
   Chart.defaults.color = colors.text;
 
@@ -219,7 +223,7 @@ window.updateChartsTheme = function(theme) {
 };
 
 // Pembaruan Grafik Dinamis
-window.updateChartData = function(chartId, newLabels, newDatasetsData, newDatasetLabels = null) {
+window.updateChartData = function (chartId, newLabels, newDatasetsData, newDatasetLabels = null) {
   const chartObj = window.activeCharts.find((c) => c.config.id === chartId);
   if (!chartObj) return;
   const chart = chartObj.instance;
