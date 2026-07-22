@@ -1,8 +1,7 @@
-// api.js
-window.WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwFg2HubxgMsHzSrVVLXpiZbU-W5kn0mIAbsXkfw3juA_YhnPfxnaKyfVBRQghWpScZMQ/exec";
+window.WEB_APP_URL = "https://script.google.com/macros/s/AKfycbygjnBXG_PN0Mr8vcwd7K1klrvhl9oq7UxtqWlf3v6Zf1Ya5RdMR7WB_ZDnDCrhS6bEjA/exec";
 
 // MAIN FETCH DATA
-window.fetchDashboardData = async function() {
+window.fetchDashboardData = async function () {
   if (!window.WEB_APP_URL) return;
 
   const loader = document.getElementById("global-loader");
@@ -45,8 +44,8 @@ function updateDashboardUI(data) {
 
   // Data Vendor Terbaik, Grafik VPI, dan Tabel VPI
   if (data.vpi_scoring_data && data.vpi_scoring_data.length > 0) {
-    // Vendor Terbaik = Ranking == 1 (kolom index 5)
-    const best = data.vpi_scoring_data.find((r) => str(r[5]) === "1" || str(r[5]) === "1.0");
+    // Vendor Terbaik = Ranking == 1 (kolom index 6)
+    const best = data.vpi_scoring_data.find((r) => str(r[6]) === "1" || str(r[6]) === "1.0");
     if (best) document.querySelector(".vendor-best").innerText = str(best[0]);
 
     // VPI Chart — label: Vendor, nilai: skor VPI (kolom index 4)
@@ -54,7 +53,7 @@ function updateDashboardUI(data) {
       window.updateChartData(
         "vpiChart",
         data.vpi_scoring_data.map((r) => str(r[0])),
-        [data.vpi_scoring_data.map((r) => num(r[4]))]
+        [data.vpi_scoring_data.map((r) => num(r[5]))],
       );
     }
 
@@ -67,14 +66,14 @@ function updateDashboardUI(data) {
 
       const mergedData = data.riwayat_raw_data.map((r) => {
         const vendorName = str(r[0]).trim().toLowerCase();
-        const scoreData = scoreMap[vendorName] || ["-", "-", "-", "-", "-"];
+        const scoreData = scoreMap[vendorName] || ["-", "-", "-", "-", "-", "-"];
         return [...r, ...scoreData];
       });
 
-      // Urutkan berdasarkan Ranking (index 10) secara ascending
+      // Urutkan berdasarkan Ranking (index 12) secara ascending
       mergedData.sort((a, b) => {
-        let rankA = num(a[10]);
-        let rankB = num(b[10]);
+        let rankA = num(a[12]);
+        let rankB = num(b[12]);
         if (rankA === 0) rankA = 999;
         if (rankB === 0) rankB = 999;
         return rankA - rankB;
@@ -97,6 +96,8 @@ function updateDashboardUI(data) {
             <td>${str(r[8])}</td>
             <td>${str(r[9])}</td>
             <td>${str(r[10])}</td>
+            <td>${str(r[11])}</td>
+            <td>${str(r[12])}</td>
           </tr>`,
         });
       }
@@ -273,6 +274,7 @@ function updateDashboardUI(data) {
             <td>${str(r[17])}</td>
             <td>${str(r[18])}</td>
             <td>${str(r[19])}</td>
+            <td>${str(r[20])}</td>
           </tr>`;
         },
       });

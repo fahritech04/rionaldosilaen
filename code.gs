@@ -29,16 +29,16 @@ function doGet(e) {
     var data = { status: "success" };
 
     // Riwayat Raw Data (Pemesanan, Return, Kirim, dsb)
-    data.riwayat_raw_data = getRange(riwayatSheet, 5, 2, 3, 6);
+    data.riwayat_raw_data = getRange(riwayatSheet, 5, 2, 3, 7);
 
     // VPI Scoring Data
-    data.vpi_scoring_data = getRange(riwayatSheet, 11, 2, 3, 6);
+    data.vpi_scoring_data = getRange(riwayatSheet, 11, 2, 3, 7);
 
     // MRP — B6 sampai ujung (mencakup MPS header, Komponen header, GR, SR, PoH, NR, PORt, PORel)
     data.mrp_data = getRange(mrpSheet, 6, 2);
 
     // QC — B5 sampai ujung (semua baris log inspeksi), 20 kolom (B sampai U)
-    data.qc_data = getRange(qcSheet, 5, 2, null, 20);
+    data.qc_data = getRange(qcSheet, 5, 2, null, 21);
 
     // FIFO Judul & Kapasitas — D2
     var fifoTitleData = getRange(fifoSheet, 2, 4, 1, 1);

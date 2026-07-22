@@ -85,6 +85,7 @@
   --group-green: rgba(22, 163, 74, 0.12);
   --group-orange: rgba(234, 179, 8, 0.16);
   --group-blue: rgba(37, 99, 235, 0.12);
+  --group-red: rgba(239, 68, 68, 0.14);
 }
 
 .vendor-history-table th,
@@ -111,6 +112,10 @@
 
 .vendor-history-table :is(th, td):nth-child(6) {
   background: var(--group-blue);
+}
+
+.vendor-history-table :is(th, td):nth-child(7) {
+  background: var(--group-red);
 }
 
 .data-table td:first-child { font-weight: 600; text-align: left; }
